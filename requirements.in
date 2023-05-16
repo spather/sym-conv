@@ -1,0 +1,8 @@
+# Compile this file with:
+#   pip-compile --output-file=requirements.txt requirements.in
+#
+# Then install with
+#   pip install -r requirements.txt
+
+jupyterlab
+jupyterlab-quarto
