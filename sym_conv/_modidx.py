@@ -5,4 +5,4 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://spather.github.io',
                 'git_url': 'https://github.com/spather/sym-conv',
                 'lib_path': 'sym_conv'},
-  'syms': {'sym_conv.core': {'sym_conv.core.foo': ('core.html#foo', 'sym_conv/core.py')}}}
+  'syms': {'sym_conv.core': {'sym_conv.core.convolve': ('core.html#convolve', 'sym_conv/core.py')}}}

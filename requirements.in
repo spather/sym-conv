@@ -6,3 +6,6 @@
 
 jupyterlab
 jupyterlab-quarto
+manim
+numpy
+sympy

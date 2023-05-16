@@ -36,12 +36,27 @@ cffi==1.15.1
     # via argon2-cffi-bindings
 charset-normalizer==3.1.0
     # via requests
+click==8.1.3
+    # via
+    #   click-default-group
+    #   cloup
+    #   manim
+click-default-group==1.2.2
+    # via manim
+cloup==0.13.1
+    # via manim
+colour==0.1.5
+    # via manim
 comm==0.1.3
     # via ipykernel
+cython==0.29.34
+    # via screeninfo
 debugpy==1.6.7
     # via ipykernel
 decorator==5.1.1
-    # via ipython
+    # via
+    #   ipython
+    #   manim
 defusedxml==0.7.1
     # via nbconvert
 executing==1.2.0
@@ -50,6 +65,8 @@ fastjsonschema==2.16.3
     # via nbformat
 fqdn==1.5.1
     # via jsonschema
+glcontext==2.3.7
+    # via moderngl
 idna==3.4
     # via
     #   anyio
@@ -61,6 +78,8 @@ ipython==8.13.2
     # via ipykernel
 isoduration==20.11.0
     # via jsonschema
+isosurfaces==0.1.0
+    # via manim
 jedi==0.18.2
     # via ipython
 jinja2==3.1.2
@@ -112,6 +131,14 @@ jupyterlab-quarto==0.1.45
     # via -r requirements.in
 jupyterlab-server==2.22.1
     # via jupyterlab
+manim==0.17.3
+    # via -r requirements.in
+manimpango==0.4.3
+    # via manim
+mapbox-earcut==1.0.1
+    # via manim
+markdown-it-py==2.2.0
+    # via rich
 markupsafe==2.1.2
     # via
     #   jinja2
@@ -120,8 +147,20 @@ matplotlib-inline==0.1.6
     # via
     #   ipykernel
     #   ipython
+mdurl==0.1.2
+    # via markdown-it-py
 mistune==2.0.5
     # via nbconvert
+moderngl==5.8.2
+    # via
+    #   manim
+    #   moderngl-window
+moderngl-window==2.4.3
+    # via manim
+mpmath==1.3.0
+    # via sympy
+multipledispatch==0.6.0
+    # via pyrr
 nbclient==0.7.4
     # via nbconvert
 nbconvert==7.4.0
@@ -133,8 +172,19 @@ nbformat==5.8.0
     #   nbconvert
 nest-asyncio==1.5.6
     # via ipykernel
+networkx==2.8.8
+    # via manim
 notebook-shim==0.2.3
     # via jupyterlab
+numpy==1.24.3
+    # via
+    #   -r requirements.in
+    #   isosurfaces
+    #   manim
+    #   mapbox-earcut
+    #   moderngl-window
+    #   pyrr
+    #   scipy
 packaging==23.1
     # via
     #   ipykernel
@@ -150,6 +200,10 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
+pillow==9.5.0
+    # via
+    #   manim
+    #   moderngl-window
 platformdirs==3.5.1
     # via jupyter-core
 prometheus-client==0.16.0
@@ -164,12 +218,26 @@ ptyprocess==0.7.0
     #   terminado
 pure-eval==0.2.2
     # via stack-data
+pycairo==1.23.0
+    # via manim
 pycparser==2.21
     # via cffi
+pydub==0.25.1
+    # via manim
+pyglet==2.0.7
+    # via moderngl-window
 pygments==2.15.1
     # via
     #   ipython
+    #   manim
     #   nbconvert
+    #   rich
+pyobjc-core==9.1.1
+    # via pyobjc-framework-cocoa
+pyobjc-framework-cocoa==9.1.1
+    # via screeninfo
+pyrr==0.10.3
+    # via moderngl-window
 pyrsistent==0.19.3
     # via jsonschema
 python-dateutil==2.8.2
@@ -186,7 +254,9 @@ pyzmq==25.0.2
     #   jupyter-client
     #   jupyter-server
 requests==2.30.0
-    # via jupyterlab-server
+    # via
+    #   jupyterlab-server
+    #   manim
 rfc3339-validator==0.1.4
     # via
     #   jsonschema
@@ -195,20 +265,35 @@ rfc3986-validator==0.1.1
     # via
     #   jsonschema
     #   jupyter-events
+rich==13.3.5
+    # via manim
+scipy==1.10.1
+    # via manim
+screeninfo==0.8.1
+    # via manim
 send2trash==1.8.2
     # via jupyter-server
 six==1.16.0
     # via
     #   asttokens
     #   bleach
+    #   multipledispatch
     #   python-dateutil
     #   rfc3339-validator
+skia-pathops==0.7.4
+    # via manim
 sniffio==1.3.0
     # via anyio
 soupsieve==2.4.1
     # via beautifulsoup4
+srt==3.5.3
+    # via manim
 stack-data==0.6.2
     # via ipython
+svgelements==1.9.5
+    # via manim
+sympy==1.12
+    # via -r requirements.in
 terminado==0.17.1
     # via
     #   jupyter-server
@@ -222,6 +307,8 @@ tornado==6.3.2
     #   jupyter-server
     #   jupyterlab
     #   terminado
+tqdm==4.65.0
+    # via manim
 traitlets==5.9.0
     # via
     #   comm
@@ -242,6 +329,8 @@ uri-template==1.2.0
     # via jsonschema
 urllib3==2.0.2
     # via requests
+watchdog==2.3.1
+    # via manim
 wcwidth==0.2.6
     # via prompt-toolkit
 webcolors==1.13
