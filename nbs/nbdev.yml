@@ -1,9 +1,0 @@
-project:
-  output-dir: _docs
-
-website:
-  title: "sym-conv"
-  site-url: "https://spather.github.io/sym-conv"
-  description: "An exploration of convolutions with SymPy"
-  repo-branch: main
-  repo-url: "https://github.com/spather/sym-conv"
