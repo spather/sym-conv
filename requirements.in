@@ -7,5 +7,6 @@
 jupyterlab
 jupyterlab-quarto
 manim
+nbdev # Technically a dev requirement but putting it here because it has a dependency conflict with manim otherwise.
 numpy
 sympy

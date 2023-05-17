@@ -17,7 +17,11 @@ argon2-cffi-bindings==21.2.0
 arrow==1.2.3
     # via isoduration
 asttokens==2.2.1
-    # via stack-data
+    # via
+    #   nbdev
+    #   stack-data
+astunparse==1.6.3
+    # via nbdev
 async-lru==2.0.2
     # via jupyterlab
 attrs==23.1.0
@@ -59,12 +63,21 @@ decorator==5.1.1
     #   manim
 defusedxml==0.7.1
     # via nbconvert
+execnb==0.1.5
+    # via nbdev
 executing==1.2.0
     # via stack-data
+fastcore==1.5.29
+    # via
+    #   execnb
+    #   ghapi
+    #   nbdev
 fastjsonschema==2.16.3
     # via nbformat
 fqdn==1.5.1
     # via jsonschema
+ghapi==1.0.3
+    # via nbdev
 glcontext==2.3.7
     # via moderngl
 idna==3.4
@@ -75,7 +88,9 @@ idna==3.4
 ipykernel==6.23.1
     # via jupyterlab
 ipython==8.13.2
-    # via ipykernel
+    # via
+    #   execnb
+    #   ipykernel
 isoduration==20.11.0
     # via jsonschema
 isosurfaces==0.1.0
@@ -165,6 +180,8 @@ nbclient==0.7.4
     # via nbconvert
 nbconvert==7.4.0
     # via jupyter-server
+nbdev==2.3.12
+    # via -r requirements.in
 nbformat==5.8.0
     # via
     #   jupyter-server
@@ -187,6 +204,8 @@ numpy==1.24.3
     #   scipy
 packaging==23.1
     # via
+    #   fastcore
+    #   ghapi
     #   ipykernel
     #   jupyter-server
     #   jupyterlab
@@ -247,7 +266,9 @@ python-dateutil==2.8.2
 python-json-logger==2.0.7
     # via jupyter-events
 pyyaml==6.0
-    # via jupyter-events
+    # via
+    #   jupyter-events
+    #   nbdev
 pyzmq==25.0.2
     # via
     #   ipykernel
@@ -276,6 +297,7 @@ send2trash==1.8.2
 six==1.16.0
     # via
     #   asttokens
+    #   astunparse
     #   bleach
     #   multipledispatch
     #   python-dateutil
@@ -330,7 +352,9 @@ uri-template==1.2.0
 urllib3==2.0.2
     # via requests
 watchdog==2.3.1
-    # via manim
+    # via
+    #   manim
+    #   nbdev
 wcwidth==0.2.6
     # via prompt-toolkit
 webcolors==1.13
@@ -341,3 +365,8 @@ webencodings==0.5.1
     #   tinycss2
 websocket-client==1.5.1
     # via jupyter-server
+wheel==0.40.0
+    # via astunparse
+
+# The following packages are considered to be unsafe in a requirements file:
+# pip
