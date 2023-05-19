@@ -1,4 +1,5 @@
 project:
+  output-dir: _site
   title: "sym-conv"
 
 
