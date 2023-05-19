@@ -578,14 +578,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This produces a video. To keep the notebook small, I’ve not embedded it directly, but the YouTube version below shows the output. This is a working animation of a convolution, generated directly from the expressions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>video_id <span class="op">=</span> <span class="st">'DrYgzmsFaNM'</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>YouTubeVideo(video_id, allow_autoplay<span class="op">=</span><span class="va">True</span>, loop<span class="op">=</span><span class="dv">1</span>, mute<span class="op">=</span><span class="dv">1</span>, playlist<span class="op">=</span>video_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
         <iframe width="400" height="300" src="https://www.youtube.com/embed/DrYgzmsFaNM?loop=1&amp;mute=1&amp;playlist=DrYgzmsFaNM&amp;autoplay=1" frameborder="0" allowfullscreen="" allow="autoplay"></iframe>
         
 </div>
 </div>
+<p>At this point, some of you will (I hope) be thinking, “cool!” But others will be thinking, “hang on, you ran a process that effectively recorded its steps in a data structure (albeit a weird one) and then you replayed it from that data structure - it shouldn’t be a suprise that you see the result you’d expect.” And to this I say, first, “yes”. And, please hold for what comes next.</p>
 </section>
 <section id="backprop-through-convolutions" class="level1">
 <h1>Backprop through Convolutions</h1>
@@ -645,58 +644,58 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
 \frac{\partial f}{\partial B_{i, j}} = \sum_{k, l} \frac{\partial f}{\partial A_{k, l}}\frac{\partial A_{k, l}}{\partial B_{i, j}}
 \]</span></p>
 <p>Most of the function is just <code>for</code>-loops and summing, but the interesting part is that it uses <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/calculus.html">SymPy’s calculus abilities</a> to compute <span class="math inline">\(\frac{\partial A_{k, l}}{\partial B_{i, j}}\)</span> symbolically in the line:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df_dA[ak][al] <span class="op">*</span> A[ak][al].diff(B[bi][bj])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df_dA[ak][al] <span class="op">*</span> A[ak][al].diff(B[bi][bj])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matrix_matrix_chain_rule(df_dA: np.ndarray, A: np.ndarray, B: np.ndarray):</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Say f is a function, A &amp; B are matrices represented by ndarrays</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Given an matrix of the elements of df/dA, A, and B, this function</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">    computes the elements of df_dB by applying the chain rule element-</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">    wise.</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    Ah, Aw <span class="op">=</span> A.shape</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    Bh, Bw <span class="op">=</span> B.shape</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> np.zeros(B.shape, dtype<span class="op">=</span>B.dtype)</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> bi <span class="kw">in</span> <span class="bu">range</span>(Bh):</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> bj <span class="kw">in</span> <span class="bu">range</span>(Bw):</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>            output[bi][bj] <span class="op">=</span> <span class="bu">sum</span>(</span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>                [</span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>                    df_dA[ak][al] <span class="op">*</span> A[ak][al].diff(B[bi][bj])</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> ak <span class="kw">in</span> <span class="bu">range</span>(Ah)</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> al <span class="kw">in</span> <span class="bu">range</span>(Aw)</span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>                ]</span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matrix_matrix_chain_rule(df_dA: np.ndarray, A: np.ndarray, B: np.ndarray):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Say f is a function, A &amp; B are matrices represented by ndarrays</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Given an matrix of the elements of df/dA, A, and B, this function</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">    computes the elements of df_dB by applying the chain rule element-</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">    wise.</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    Ah, Aw <span class="op">=</span> A.shape</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    Bh, Bw <span class="op">=</span> B.shape</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> np.zeros(B.shape, dtype<span class="op">=</span>B.dtype)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> bi <span class="kw">in</span> <span class="bu">range</span>(Bh):</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> bj <span class="kw">in</span> <span class="bu">range</span>(Bw):</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>            output[bi][bj] <span class="op">=</span> <span class="bu">sum</span>(</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>                [</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>                    df_dA[ak][al] <span class="op">*</span> A[ak][al].diff(B[bi][bj])</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> ak <span class="kw">in</span> <span class="bu">range</span>(Ah)</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> al <span class="kw">in</span> <span class="bu">range</span>(Aw)</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>                ]</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now use this to calculate <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}}\)</span>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a1, W2, and convolve them:</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>conv_result <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up B2 with the same shape as conv_result</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>B2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'B^{[2]}'</span>), conv_result.shape)</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate z2 in terms of the conv_result and B2.</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> conv_result <span class="op">+</span> B2</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the loss function symbolically.</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> Function(<span class="vs">r'\mathcal</span><span class="sc">{L}</span><span class="vs">'</span>)(y, yhat)</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Build dL/dz2</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>dz2 <span class="op">=</span> ndarray_of_indexed_base(</span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>dB2 <span class="op">=</span> matrix_matrix_chain_rule(dz2, z2, B2)</span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dB2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a1, W2, and convolve them:</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>conv_result <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up B2 with the same shape as conv_result</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>B2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'B^{[2]}'</span>), conv_result.shape)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate z2 in terms of the conv_result and B2.</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> conv_result <span class="op">+</span> B2</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the loss function symbolically.</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> Function(<span class="vs">r'\mathcal</span><span class="sc">{L}</span><span class="vs">'</span>)(y, yhat)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Build dL/dz2</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>dz2 <span class="op">=</span> ndarray_of_indexed_base(</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>dB2 <span class="op">=</span> matrix_matrix_chain_rule(dz2, z2, B2)</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dB2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math display">\[\begin{bmatrix}
 \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
@@ -712,7 +711,7 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
 \]</span></p>
 <p>in code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>test_eq(dB2, dz2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>test_eq(dB2, dz2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
