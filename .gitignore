@@ -146,5 +146,5 @@ checklink/cookies.txt
 .pkg
 
 # Quarto
-.quarto
+/.quarto/
 /_site/
