@@ -591,140 +591,121 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The calculation of <span class="math inline">\(z^{[2]}\)</span> we’ve looked at so far is part of the forward pass of a CNN. As I mentioned before, <span class="math inline">\(z^{[2]}\)</span> will typically go through a non-linear activation function to produce <span class="math inline">\(a^{[2]}\)</span>, which would propagate all the way to the end of the network, producing a final output, <span class="math inline">\(\hat{y}\)</span>.</p>
 <p>To start the backward pass, we’d evaluate the loss function (<span class="math inline">\(\mathcal{L}(y, \hat{y})\)</span>) and use the chain rule to propagate the loss backwards through the layers. My CNN class didn’t derive the backprop equations for convolutional layers - my attempting to do that on my own led to this whole investigation. It turns out that the approach of using symbols in the convolution matrices makes it really easy to not only derive the backprop equations but also visualize them.</p>
 <p>As a starting point, I’ll assume the backprop process has given us <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> and now need to compute <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span>, and <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>.</p>
-<p>Let’s start with the simplest one, <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span>: the gradient of the loss with respect to the bias term, <span class="math inline">\(b^{[2]}\)</span>.</p>
-<section id="deriving-fracpartial-mathcallpartial-b2" class="level2">
-<h2 class="anchored" data-anchor-id="deriving-fracpartial-mathcallpartial-b2">Deriving <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span></h2>
-<p>We calculated <span class="math inline">\(z^{[2]}\)</span> as follows:</p>
+<p>Let’s start with <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>: the gradient of the loss with respect to the weights in the convolution filter, <span class="math inline">\(W^{[2]}\)</span>.</p>
+<section id="deriving-fracpartial-mathcallpartial-w2" class="level2">
+<h2 class="anchored" data-anchor-id="deriving-fracpartial-mathcallpartial-w2">Deriving <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span></h2>
+<p>The backprop process through all the layers <span class="math inline">\(\mathcal{l}\)</span> for <span class="math inline">\(\mathcal{l} &gt; 2\)</span> has given us:</p>
 <p><span class="math display">\[
-z^{[2]} = a^{[1]} * W^{[2]} + b^{[2]}
-\]</span></p>
-<p><span class="math inline">\(b^{[2]}\)</span> is a scalar that we add to each element of the matrix, <span class="math inline">\(a^{[1]} * W^{[2]}\)</span>. For the purpose of this derivation, it’s helpful to think of <span class="math inline">\(b^{[2]}\)</span> as a matrix with the same dimensions as <span class="math inline">\(a^{[1]} * W^{[2]}\)</span> in which the value of every element is the scalar value of <span class="math inline">\(b^{[2]}\)</span>:</p>
-<p><span class="math display">\[
-\begin{bmatrix}
-b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
-b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
-b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
-b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
-\end{bmatrix}
-\]</span></p>
-<p>To distinguish the scalar <span class="math inline">\(b^{[2]}\)</span> clearly from the matrix version, we’ll call the matrix version <span class="math inline">\(\mathbf{B^{[2]}}\)</span>:</p>
-<p><span class="math display">\[
-\mathbf{B^{[2]}} =
+\frac{\partial \mathcal{L}}{\partial z^{[2]}} =
 \def\arraystretch{1.5}
 \begin{bmatrix}
-\mathbf{B^{[2]}_{11}} &amp; \mathbf{B^{[2]}_{12}} &amp; \mathbf{B^{[2]}_{13}} &amp; \mathbf{B^{[2]}_{14}}\\
-\mathbf{B^{[2]}_{21}} &amp; \mathbf{B^{[2]}_{22}} &amp; \mathbf{B^{[2]}_{23}} &amp; \mathbf{B^{[2]}_{24}}\\
-\mathbf{B^{[2]}_{31}} &amp; \mathbf{B^{[2]}_{32}} &amp; \mathbf{B^{[2]}_{33}} &amp; \mathbf{B^{[2]}_{34}}\\
-\mathbf{B^{[2]}_{41}} &amp; \mathbf{B^{[2]}_{42}} &amp; \mathbf{B^{[2]}_{43}} &amp; \mathbf{B^{[2]}_{44}}\\
+\frac{\partial \mathcal{L}}{\partial z^{[2]}_{11}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{12}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{13}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{14}}\\
+\frac{\partial \mathcal{L}}{\partial z^{[2]}_{21}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{22}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{23}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{24}}\\
+\frac{\partial \mathcal{L}}{\partial z^{[2]}_{31}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{32}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{33}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{34}}\\
+\frac{\partial \mathcal{L}}{\partial z^{[2]}_{41}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{42}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{43}} &amp; \frac{\partial \mathcal{L}}{\partial z^{[2]}_{44}}\\
 \end{bmatrix}
-=
+\]</span></p>
+<p>and now we want to calculate:</p>
+<p><span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial W^{[2]}} =
+\def\arraystretch{1.5}
 \begin{bmatrix}
-b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
-b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
-b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
-b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+\frac{\partial \mathcal{L}}{\partial W^{[2]}_{11}} &amp; \frac{\partial \mathcal{L}}{\partial W^{[2]}_{12}} &amp; \frac{\partial \mathcal{L}}{\partial W^{[2]}_{13}}\\
+\frac{\partial \mathcal{L}}{\partial W^{[2]}_{21}} &amp; \frac{\partial \mathcal{L}}{\partial W^{[2]}_{22}} &amp; \frac{\partial \mathcal{L}}{\partial W^{[2]}_{23}}\\
+\frac{\partial \mathcal{L}}{\partial W^{[2]}_{31}} &amp; \frac{\partial \mathcal{L}}{\partial W^{[2]}_{32}} &amp; \frac{\partial \mathcal{L}}{\partial W^{[2]}_{33}}\\
 \end{bmatrix}
 \]</span></p>
-<p>and</p>
+<p>Each element of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span> represents the gradient of the loss function <span class="math inline">\(\mathcal{L}\)</span> with respect to the corresponding element of <span class="math inline">\(W^{[2]}\)</span>. Because <span class="math inline">\(z^{[2]} = a^{[1]} * W^{[2]} + b^{[2]}\)</span>, each element of <span class="math inline">\(W^{[2]}\)</span> contributes to every element of <span class="math inline">\(z^{[2]}\)</span>.</p>
+<p>Let’s consider <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}_{11}}\)</span>, the loss gradient with respect to the first element of <span class="math inline">\(W^{[2]}\)</span>. For each element <span class="math inline">\(z^{[2]}_{k, l}\)</span> of <span class="math inline">\(z^{[2]}\)</span>:</p>
+<ul>
+<li>We know <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}_{k, l}}\)</span> (gradient of the loss with respect to <span class="math inline">\(z^{[2]}_{k, l}\)</span>)</li>
+<li>We can compute <span class="math inline">\(\frac{\partial z^{[2]}_{k, l}}{\partial W^{[2]}_{11}}\)</span> (gradient of <span class="math inline">\(z^{[2]}_{k, l}\)</span> with respect to <span class="math inline">\(W^{[2]}_{11}\)</span>)</li>
+</ul>
+<p>The chain rule says we can multiply these together:</p>
 <p><span class="math display">\[
-z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
-\]</span> Now the plus sign in the formular above is just plain matrix (element-wise) addition.</p>
-<blockquote class="blockquote">
-<p>Note: The transformation from <span class="math inline">\(b^{[2]}\)</span> to <span class="math inline">\(\mathbf{B^{[2]}}\)</span> I’ve written out here actually happens implicitly in the code we wrote earlier (<code>z2 = convolve(a1, W2, 0, 1) + b2</code>) because of <a href="https://numpy.org/doc/stable/user/basics.broadcasting.html">NumPy broadcasting</a>.</p>
-</blockquote>
-<p>We can then calculate the derivative of <span class="math inline">\(\mathcal{L}\)</span> with respect to this <span class="math inline">\(\mathbf{B^{[2]}}\)</span> matrix. Remember, we’ve got <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> and now we want <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}}\)</span>.</p>
-<p>We can do this by applying the chain rule, element-wise. E.g. <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]_{11}}}}\)</span> would be:</p>
-<p><span class="math display">\[
-\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}_{11}}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}_{11}}\frac{\partial z^{[2]}_{11}}{\partial \mathbf{B^{[2]}_{11}}} + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{12}}\frac{\partial z^{[2]}_{12}}{\partial \mathbf{B^{[2]}_{11}}} + \cdots + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{44}}\frac{\partial z^{[2]}_{44}}{\partial \mathbf{B^{[2]}_{11}}}
+\frac{\partial \mathcal{L}}{\partial z^{[2]}_{k, l}}\frac{\partial z^{[2]}_{k, l}}{\partial W^{[2]}_{11}}
 \]</span></p>
-<p>We could take this further and simply by hand to work out what this is really saying, but we’ve got a whole symbolic engine at our disposal so let’s use that instead.</p>
-<p>First, let’s write a general function to do the element-wise chain rule operation described above. Assuming <code>A</code>, and <code>B</code> are matrices of symbols and <code>df_dA</code> is also a matrix of symbols representing <span class="math inline">\(\frac{\partial f}{\partial A}\)</span>, this function computes <span class="math inline">\(\frac{\partial f}{\partial B}\)</span> by applying the chain rule element-wise:</p>
+<p>and this will give us the portion of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}_{11}}\)</span> resulting from <span class="math inline">\(W^{[2]}_{11}\)</span>’s contribution to <span class="math inline">\(z^{[2]}_{k, l}\)</span>. If we want the total <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}_{11}}\)</span> we just need to sum this across all elements <span class="math inline">\(z^{[2]}_{k, l}\)</span> of <span class="math inline">\(z^{[2]}\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W^{[2]}_{11}} &amp;= \sum_{k, l} \frac{\partial \mathcal{L}}{\partial z^{[2]}_{k, l}}\frac{\partial z^{[2]}_{k, l}}{\partial W^{[2]}_{11}}\\[2em]
+&amp;= \frac{\partial \mathcal{L}}{\partial z^{[2]}_{11}}\frac{\partial z^{[2]}_{11}}{\partial W^{[2]}_{11}} + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{12}}\frac{\partial z^{[2]}_{12}}{\partial W^{[2]}_{11}} + \cdots + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{44}}\frac{\partial z^{[2]}_{44}}{\partial W^{[2]}_{11}}
+\end{align}
+\]</span></p>
+<p>Or, more generally, for each element <span class="math inline">\(W^{[2]}_{i, j}\)</span> of <span class="math inline">\(W^{[2]}\)</span>:</p>
+<p><span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial W^{[2]}_{i, j}} = \sum_{k, l} \frac{\partial \mathcal{L}}{\partial z^{[2]}_{k, l}}\frac{\partial z^{[2]}_{k, l}}{\partial W^{[2]}_{i, j}}
+\]</span></p>
+<p>We could of course work out by hand what this would be. But we’ve got a whole symbolic engine at our disposal - lets use it instead!</p>
+<p>SymPy has the ability to differentiate symbolic expressions (and other <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/calculus.html">calculus abilities</a>). Here’s a quick showcase: let’s create a symbolic expression for: <span class="math inline">\(x = 2y^2 + 3z\)</span> and then differentiate with respect to <span class="math inline">\(y\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x, y, z <span class="op">=</span> symbols(<span class="st">'x y z'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>z </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>x.diff(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math inline">\(\displaystyle 4 y\)</span></p>
+</div>
+</div>
+<p>The answer, <span class="math inline">\(4y\)</span>, is of course what we expect. In the computation of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, we know we’re going to need <span class="math inline">\(\frac{\partial z^{[2]}_{k, l}}{\partial W^{[2]}_{i, j}}\)</span>. Our <code>z2</code> matrix already contains the expressions for each element of <span class="math inline">\(z^{[2]}\)</span>. E.g. <span class="math inline">\(z^{[2]}_{1, 1}\)</span> is:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>z2[<span class="dv">0</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math inline">\(\displaystyle {B^{[2]}}_{1,1} + {W^{[2]}}_{1,1} {a^{[1]}}_{1,1} + {W^{[2]}}_{1,2} {a^{[1]}}_{1,2} + {W^{[2]}}_{1,3} {a^{[1]}}_{1,3} + {W^{[2]}}_{2,1} {a^{[1]}}_{2,1} + {W^{[2]}}_{2,2} {a^{[1]}}_{2,2} + {W^{[2]}}_{2,3} {a^{[1]}}_{2,3} + {W^{[2]}}_{3,1} {a^{[1]}}_{3,1} + {W^{[2]}}_{3,2} {a^{[1]}}_{3,2} + {W^{[2]}}_{3,3} {a^{[1]}}_{3,3}\)</span></p>
+</div>
+</div>
+<p>We can use the same <code>diff()</code> method shown above to compute the derivivatives with respect to the elements of <span class="math inline">\(W^{[2]}\)</span>. E.g., here’s <span class="math inline">\(\frac{\partial z^{[2]}_{1, 1}}{\partial W^{[2]}_{1, 1}}\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>z2[<span class="dv">0</span>][<span class="dv">0</span>].diff(W2[<span class="dv">0</span>][<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math inline">\(\displaystyle {a^{[1]}}_{1,1}\)</span></p>
+</div>
+</div>
+<p>We could now write some code to compute each element of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span> according to the by applying the chain rule with each element of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> and summing, as we worked out above. But we’re going to need similar logic in other cases, so let’s write a more general-purpose function we can re-use.</p>
+<p>Let <code>A</code> and <code>B</code> be matrices of symbols and <code>df_dA</code> also be a matrix of symbols representing <span class="math inline">\(\frac{\partial f}{\partial A}\)</span>. The function below computes <span class="math inline">\(\frac{\partial f}{\partial B}\)</span> by applying the chain rule element-wise:</p>
 <p>For every <span class="math inline">\(i, j\)</span> in <span class="math inline">\(B\)</span>, the function calculates</p>
 <p><span class="math display">\[
 \frac{\partial f}{\partial B_{i, j}} = \sum_{k, l} \frac{\partial f}{\partial A_{k, l}}\frac{\partial A_{k, l}}{\partial B_{i, j}}
 \]</span></p>
-<p>Most of the function is just <code>for</code>-loops and summing, but the interesting part is that it uses <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/calculus.html">SymPy’s calculus abilities</a> to compute <span class="math inline">\(\frac{\partial A_{k, l}}{\partial B_{i, j}}\)</span> symbolically in the line:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df_dA[ak][al] <span class="op">*</span> A[ak][al].diff(B[bi][bj])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matrix_matrix_chain_rule(df_dA: np.ndarray, A: np.ndarray, B: np.ndarray):</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Say f is a function, A &amp; B are matrices represented by ndarrays</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Given an matrix of the elements of df/dA, A, and B, this function</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">    computes the elements of df_dB by applying the chain rule element-</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">    wise.</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    Ah, Aw <span class="op">=</span> A.shape</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    Bh, Bw <span class="op">=</span> B.shape</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> np.zeros(B.shape, dtype<span class="op">=</span>B.dtype)</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> bi <span class="kw">in</span> <span class="bu">range</span>(Bh):</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> bj <span class="kw">in</span> <span class="bu">range</span>(Bw):</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>            output[bi][bj] <span class="op">=</span> <span class="bu">sum</span>(</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>                [</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>                    df_dA[ak][al] <span class="op">*</span> A[ak][al].diff(B[bi][bj])</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> ak <span class="kw">in</span> <span class="bu">range</span>(Ah)</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> al <span class="kw">in</span> <span class="bu">range</span>(Aw)</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>                ]</span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matrix_matrix_chain_rule(df_dA: np.ndarray, A: np.ndarray, B: np.ndarray):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Say f is a function, A &amp; B are matrices represented by ndarrays</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Given an matrix of the elements of df/dA, A, and B, this function</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">    computes the elements of df_dB by applying the chain rule element-</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">    wise.</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    Ah, Aw <span class="op">=</span> A.shape</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    Bh, Bw <span class="op">=</span> B.shape</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> np.zeros(B.shape, dtype<span class="op">=</span>B.dtype)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> bi <span class="kw">in</span> <span class="bu">range</span>(Bh):</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> bj <span class="kw">in</span> <span class="bu">range</span>(Bw):</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>            output[bi][bj] <span class="op">=</span> <span class="bu">sum</span>(</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>                [</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>                    df_dA[ak][al] <span class="op">*</span> A[ak][al].diff(B[bi][bj])</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> ak <span class="kw">in</span> <span class="bu">range</span>(Ah)</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> al <span class="kw">in</span> <span class="bu">range</span>(Aw)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>                ]</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can now use this to calculate <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}}\)</span>:</p>
+<p>Now, let’s use our symbolic engine and our <code>matrix_matrix_chain_rule()</code> function to work out <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a1, W2, and convolve them:</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>conv_result <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up B2 with the same shape as conv_result</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>B2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'B^{[2]}'</span>), conv_result.shape)</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate z2 in terms of the conv_result and B2.</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> conv_result <span class="op">+</span> B2</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the loss function symbolically.</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> Function(<span class="vs">r'\mathcal</span><span class="sc">{L}</span><span class="vs">'</span>)(y, yhat)</span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Build dL/dz2</span></span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>dz2 <span class="op">=</span> ndarray_of_indexed_base(</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>dB2 <span class="op">=</span> matrix_matrix_chain_rule(dz2, z2, B2)</span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dB2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<p><span class="math display">\[\begin{bmatrix}
-\frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
-\frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
-\frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
-\frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)}\end{bmatrix}
-\]</span></p>
-</div>
-</div>
-<p>Each element of this is the same as the corresponding element of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span>. We can confirm that</p>
-<p><span class="math display">\[
-\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}}
-\]</span></p>
-<p>in code:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>test_eq(dB2, dz2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="deriving-fracpartial-mathcallpartial-w2" class="level2">
-<h2 class="anchored" data-anchor-id="deriving-fracpartial-mathcallpartial-w2">Deriving <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span></h2>
-<p>Now we can derive <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, given <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span>. Like before we can apply the chain rule, element-wise. E.g. <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]_{11}}}\)</span> would be:</p>
-<p><span class="math display">\[
-\frac{\partial \mathcal{L}}{\partial W^{[2]}_{11}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}_{11}}\frac{\partial z^{[2]}_{11}}{\partial W^{[2]}_{11}} + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{12}}\frac{\partial z^{[2]}_{12}}{\partial W^{[2]}_{11}} + \cdots + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{44}}\frac{\partial z^{[2]}_{44}}{\partial W^{[2]}_{11}}
-\]</span></p>
-<p>And like before, let’s use our symbolic engine and our <code>matrix_matrix_chain_rule()</code> function to work this out for us.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>dW2 <span class="op">=</span> matrix_matrix_chain_rule(dz2, z2, W2)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dW2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Describe the loss function symbolically</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> Function(<span class="vs">r'\mathcal</span><span class="sc">{L}</span><span class="vs">'</span>)(y, yhat)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Build dL/dz2</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>dz2 <span class="op">=</span> ndarray_of_indexed_base(</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>dW2 <span class="op">=</span> matrix_matrix_chain_rule(dz2, z2, W2)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dW2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math display">\[\begin{bmatrix}
 \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,1} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,2} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,3} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,4} + \frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,1} + \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,2} + \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,3} + \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,4} + \frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,1} + \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,2} + \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,3} + \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,4} + \frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,1} + \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,2} + \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,3} + \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,4} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,2} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,3} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,4} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,5} + \frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,2} + \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,3} + \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,4} + \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,5} + \frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,2} + \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,3} + \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,4} + \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,5} + \frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,2} + \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,3} + \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,4} + \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,5} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,3} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,4} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,5} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,6} + \frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,3} + \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,4} + \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,5} + \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,6} + \frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,3} + \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,4} + \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,5} + \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,6} + \frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,3} + \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,4} + \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,5} + \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,6}\\
@@ -733,7 +714,7 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
 \]</span></p>
 </div>
 </div>
-<p>This didn’t turn out quite as simple as <code>dB2</code>. But before trying to dig into it, let’s just visualize it. Each expression looks like a sum of products and so like before, we can build a highlight map from it, and use this to animate a diagram. But we do need to make one tiny change to <code>build_highlights_map()</code>, to make it deal with the derivatives of indexed objects.</p>
+<p>OK, we got a matrix, and each element of this is an expression. Before trying to dig into it, let’s just visualize it. Each expression looks like a sum of products and so like before, we can build a highlight map from it, and use this to animate a diagram. But we do need to make one tiny change to <code>build_highlights_map()</code>, to make it deal with the derivatives of indexed objects.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_highlights_map(expr: Expr) <span class="op">-&gt;</span> Dict[<span class="bu">str</span>, List[Tuple]]:</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The expression needs to be either a sum of products or a single product</span></span>
@@ -765,6 +746,7 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
 <span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>            results[indexed.base.name].append(indexed.indices)</span>
 <span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We can now use this version of <code>build_highlights_map()</code> in drawing code to visualize the operations used to compute <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>. The result is the video below.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -888,6 +870,105 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
         <iframe width="400" height="300" src="https://www.youtube.com/embed/avnGPLTbvGY?loop=1&amp;mute=1&amp;playlist=avnGPLTbvGY&amp;autoplay=1" frameborder="0" allowfullscreen="" allow="autoplay"></iframe>
         
 </div>
+</div>
+<p>This looks a whole lot like a convolution of <span class="math inline">\(a^{[1]}\)</span> with <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span>. We can confirm this with the equations:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>display(dW2[<span class="dv">0</span>][<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math inline">\(\displaystyle \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,1} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,2} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,3} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{1,4} + \frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,1} + \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,2} + \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,3} + \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,4} + \frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,1} + \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,2} + \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,3} + \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,4} + \frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,1} + \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,2} + \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,3} + \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,4}\)</span></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>display(dW2[<span class="dv">1</span>][<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math inline">\(\displaystyle \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,1} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,2} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,3} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{2,4} + \frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,1} + \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,2} + \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,3} + \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{3,4} + \frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,1} + \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,2} + \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,3} + \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{4,4} + \frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{5,1} + \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{5,2} + \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{5,3} + \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)} {a^{[1]}}_{5,4}\)</span></p>
+</div>
+</div>
+<p>Notice how in <code>dw2[0][0]</code> (which is <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}_{11}}\)</span>) each element of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> is multiplied by the corresponding element of <span class="math inline">\(a^{[1]}\)</span> and in <code>dw2[1][0]</code> (<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial w^{[2]}_{21}}\)</span>) all the indices of <span class="math inline">\(a^{[1]}\)</span> are shifted down by one, as you’d expect.</p>
+<p>But this is all so much easier to see in the visualization. Again, the visualization was generated from the expressions in <code>dW2</code>, not programmed based on some advanced knowledge of how it should look. In this way, it’s actually more of a simulation than a visualization.</p>
+<p>So we can conclude that:</p>
+<p><span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial W^{[2]}} = a^{[1]} * \frac{\partial \mathcal{L}}{\partial z^{[2]}}
+\]</span></p>
+<p>In code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>test_eq(convolve(a1, dz2, <span class="dv">0</span>, <span class="dv">1</span>), dW2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="deriving-fracpartial-mathcallpartial-b2" class="level2">
+<h2 class="anchored" data-anchor-id="deriving-fracpartial-mathcallpartial-b2">Deriving <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span></h2>
+<p>Now let’s tackle <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span>: the gradient of the loss with respect to the bias term, <span class="math inline">\(b^{[2]}\)</span>. In our calculation of <span class="math inline">\(z^{[2]}\)</span>:</p>
+<p><span class="math display">\[
+z^{[2]} = a^{[1]} * W^{[2]} + b^{[2]}
+\]</span></p>
+<p><span class="math inline">\(b^{[2]}\)</span> is a scalar that we add to each element of the matrix, <span class="math inline">\(a^{[1]} * W^{[2]}\)</span>. For the purpose of this derivation, it’s helpful to think of <span class="math inline">\(b^{[2]}\)</span> as a matrix with the same dimensions as <span class="math inline">\(a^{[1]} * W^{[2]}\)</span> in which the value of every element is the scalar value of <span class="math inline">\(b^{[2]}\)</span>:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+\end{bmatrix}
+\]</span></p>
+<p>To distinguish the scalar <span class="math inline">\(b^{[2]}\)</span> clearly from the matrix version, we’ll call the matrix version <span class="math inline">\(\mathbf{B^{[2]}}\)</span>:</p>
+<p><span class="math display">\[
+\mathbf{B^{[2]}} =
+\def\arraystretch{1.5}
+\begin{bmatrix}
+\mathbf{B^{[2]}_{11}} &amp; \mathbf{B^{[2]}_{12}} &amp; \mathbf{B^{[2]}_{13}} &amp; \mathbf{B^{[2]}_{14}}\\
+\mathbf{B^{[2]}_{21}} &amp; \mathbf{B^{[2]}_{22}} &amp; \mathbf{B^{[2]}_{23}} &amp; \mathbf{B^{[2]}_{24}}\\
+\mathbf{B^{[2]}_{31}} &amp; \mathbf{B^{[2]}_{32}} &amp; \mathbf{B^{[2]}_{33}} &amp; \mathbf{B^{[2]}_{34}}\\
+\mathbf{B^{[2]}_{41}} &amp; \mathbf{B^{[2]}_{42}} &amp; \mathbf{B^{[2]}_{43}} &amp; \mathbf{B^{[2]}_{44}}\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
+\end{bmatrix}
+\]</span></p>
+<p>and plug it into the formula for <span class="math inline">\(z^{[2]}\)</span>:</p>
+<p><span class="math display">\[
+z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
+\]</span> Now the plus sign in the formular above is just plain matrix (element-wise) addition.</p>
+<blockquote class="blockquote">
+<p>Note: The transformation from <span class="math inline">\(b^{[2]}\)</span> to <span class="math inline">\(\mathbf{B^{[2]}}\)</span> I’ve written out here actually happens implicitly in the code we wrote earlier (<code>z2 = convolve(a1, W2, 0, 1) + b2</code>) because of <a href="https://numpy.org/doc/stable/user/basics.broadcasting.html">NumPy broadcasting</a>.</p>
+</blockquote>
+<p>We can then calculate the derivative of <span class="math inline">\(\mathcal{L}\)</span> with respect to this <span class="math inline">\(\mathbf{B^{[2]}}\)</span> matrix. Remember, we’ve got <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> and now we want <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}}\)</span>.</p>
+<p>Like we did in the calculation of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{W^{[2]}}}\)</span>, we can apply the chain rule, element-wise. E.g. <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]_{11}}}}\)</span> would be:</p>
+<p><span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}_{11}}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}_{11}}\frac{\partial z^{[2]}_{11}}{\partial \mathbf{B^{[2]}_{11}}} + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{12}}\frac{\partial z^{[2]}_{12}}{\partial \mathbf{B^{[2]}_{11}}} + \cdots + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{44}}\frac{\partial z^{[2]}_{44}}{\partial \mathbf{B^{[2]}_{11}}}
+\]</span></p>
+<p>Of course, many of these terms are zero because <span class="math inline">\(\frac{\partial z^{[2]}_{k, l}}{\partial \mathbf{B^{[2]}_{i, j}}} = 0\)</span> when <span class="math inline">\(k \neq i\)</span> or <span class="math inline">\(l \neq j\)</span>. But rather than trying to reason about this ourselves or simplify by hand to work out what this is really saying, we can instead just use <code>matrix_matrix_chain_rule()</code> to do it for us:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Redo the calculation of z2 using the B2 matrix</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>conv_result <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>B2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'B^{[2]}'</span>), conv_result.shape)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> conv_result <span class="op">+</span> B2</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute dB2</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>dB2 <span class="op">=</span> matrix_matrix_chain_rule(dz2, z2, B2)</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dB2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math display">\[\begin{bmatrix}
+\frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
+\frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
+\frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
+\frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)}\end{bmatrix}
+\]</span></p>
+</div>
+</div>
+<p>Each element of this is the same as the corresponding element of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span>. We can confirm that</p>
+<p><span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}}
+\]</span></p>
+<p>in code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>test_eq(dB2, dz2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
