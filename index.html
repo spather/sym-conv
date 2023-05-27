@@ -99,6 +99,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<section id="motivation" class="level2">
+<h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
+<p>The deep learning classes I’ve taken have all followed similar progression:</p>
+<ol type="1">
+<li>First, you learn to do the math by hand, using symbols (the input vector is <span class="math inline">\(x\)</span>, the weight matrix is <span class="math inline">\(W\)</span>, <span class="math inline">\(z = Wx + b\)</span>, etc)</li>
+<li>Next, you write code to implement the math numerically (manipulating arrays or tensors of numbers). At this stage, you write it from scratch using just NumPy arrays.</li>
+<li>Finally, you graduate to writing code that uses deep learning frameworks like TensorFlow and PyTorch.</li>
+</ol>
+<p>Step 1 teaches you the theory, and step 3 teaches you the tools that real practitioners use. Step 2 in between teaches you what those tools are doing so you don’t approach them as black boxes. I’m a fan.</p>
+<p>I recently took a class on Convolutional Neural Networks. While it followed this progression, it didn’t teach the math for back propagation through convolutional layers. I tried to work this out for myself and found that the math wasn’t hard, but it was tedious. In trying to explore ways to automate some of the tedious parts, I think I found an approach that re-organizes things so that step 2 (writing the code from scratch) borrows an idea from step 3 and as a result, actually helps with step 1 (understanding the math).</p>
+<p>In the usual progression, the big change between steps 2 and 3 is that the deep learning frameworks give you automatic differentiation capabiliites (<a href="https://www.tensorflow.org/guide/autodiff"><code>GradientTape</code></a> in TensorFlow, <a href="https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html"><code>autograd</code></a> in PyTorch). When you write a neural network from scratch, you write the forward and backward passes as separate algorithms that share some data. With auto differentiation, you to write just the forward pass logic and you get the backward pass for free. The framework keeps track of the operations performed in the forward pass and can calculate the partial derivatives required for back propagation automatically.</p>
+<p>Auto differentiation reduces the amount of code you need to write to implement a neural network but it isn’t a learning tool. It does its job numerically: given the numerical value of the gradient at some node in a computation graph, you can get the numerical value of the gradient at earlier nodes, but you can’t see the derivatives expressed symbolically. You get the answer but the framework doesn’t show its work. Classes introduce auto differentiation frameworks late in the curriculum because they’re a convenience you earn the right to use after you’ve worked through the math the hard way.</p>
+<p>My approach is a hybrid: implementing algorithms from scratch but using a symbolic framework that can auto differentiate while showing its work. It really helped me with my task of deriving the backprop equations for convolutions. This technique isn’t a replacement for doing math by hand and I wouldn’t blindly trust it, but it helped me learn. It automated the math that’s easy but tedious to work through by hand, and helped me visualize the patterns behind the equations.</p>
+<p>In this notebook, I’ll walk you through what I did.</p>
+</section>
 <section id="convolution-algorithm" class="level2">
 <h2 class="anchored" data-anchor-id="convolution-algorithm">Convolution Algorithm</h2>
 <p>Below is the convolution* function I implemented for my CNN course. It’s probably not the most efficient implementation, but writing it was a good learning exercise.</p>
