@@ -604,17 +604,17 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <blockquote class="blockquote">
 <p>In this visualization and all the others that follow, the “output element” (the element of the convolution result being computed) is highlighted in teal, and the elements of the inputs being multiplied together are outlined in yellow. In the example above, to compute element <span class="math inline">\(z^{[2]}_{1, 2}\)</span> (highlighted in teal), we multiply the elements of <span class="math inline">\(W^{[2]}\)</span> with the elements of <span class="math inline">\(a^{[1]}\)</span> outlined in yellow.</p>
 </blockquote>
-<p>In the code that generated this image, we hardcoded the cells to highlight:</p>
+<p>In the code that generated this image, I hardcoded the cells to highlight:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Map of cells to highlight</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>        highlights_map <span class="op">=</span> {</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'W^{[2]}'</span>: [(<span class="dv">1</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">3</span>), (<span class="dv">2</span>, <span class="dv">1</span>), (<span class="dv">2</span>, <span class="dv">2</span>), (<span class="dv">2</span>, <span class="dv">3</span>), (<span class="dv">3</span>, <span class="dv">1</span>), (<span class="dv">3</span>, <span class="dv">2</span>), (<span class="dv">3</span>, <span class="dv">3</span>)], </span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'a^{[1]}'</span>: [(<span class="dv">1</span>, <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">3</span>), (<span class="dv">1</span>, <span class="dv">4</span>), (<span class="dv">2</span>, <span class="dv">2</span>), (<span class="dv">2</span>, <span class="dv">3</span>), (<span class="dv">2</span>, <span class="dv">4</span>), (<span class="dv">3</span>, <span class="dv">2</span>), (<span class="dv">3</span>, <span class="dv">3</span>), (<span class="dv">3</span>, <span class="dv">4</span>)],</span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>It would be better if we could generate this highlights map directly from an expression like:</p>
+<p>It turns out we can generate this highlights map directly from an expression like:</p>
 <p><span class="math display">\[
 {W^{[2]}}_{1,1} {a^{[1]}}_{1,2} + {W^{[2]}}_{1,2} {a^{[1]}}_{1,3} + {W^{[2]}}_{1,3} {a^{[1]}}_{1,4} + {W^{[2]}}_{2,1} {a^{[1]}}_{2,2} + {W^{[2]}}_{2,2} {a^{[1]}}_{2,3} + {W^{[2]}}_{2,3} {a^{[1]}}_{2,4} + {W^{[2]}}_{3,1} {a^{[1]}}_{3,2} + {W^{[2]}}_{3,2} {a^{[1]}}_{3,3} + {W^{[2]}}_{3,3} {a^{[1]}}_{3,4}
 \]</span></p>
-<p>This turns out to be pretty easy to do because that expression is also a data structure. SymPy represents expressions as easily navigable trees. Details are in the <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/manipulation.html">documentation</a> but the basic idea is that every expression object has a <code>func</code> attribute and an <code>args</code> attribute that (roughly) correspond to the operation and operands respectively. A few examples:</p>
+<p>Because that expression is also a data structure. SymPy represents expressions as trees: details are in the <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/manipulation.html">documentation</a> but the basic idea is that every expression object has a <code>func</code> attribute and an <code>args</code> attribute that (roughly) correspond to the operator and operands respectively. A few examples:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> Symbol(<span class="st">'x'</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> <span class="dv">2</span> <span class="op">+</span> x</span>
@@ -651,7 +651,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>            results[indexed.base.name].append(indexed.indices)    </span>
 <span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This function makes a lot of assumptions that it’s dealing with expressions that are just sums of products of <code>Indexed</code> objects, but it suffices for what we need. We can test it with one of our expressions in the <code>z2</code> array:</p>
+<p>This function makes a lot of assumptions that it’s dealing with expressions that are just sums of products of <code>Indexed</code> objects, but it suffices for now. We can test it with one of the expressions in the <code>z2</code> array:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>build_highlights_map(z2[<span class="dv">0</span>][<span class="dv">1</span>]<span class="op">-</span>b2) <span class="co"># Subtract off b2 because we aren't interested in the bias term for now.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -743,7 +743,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb31-62"><a href="#cb31-62" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, z2_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>This produces a video. To keep the notebook small, I’ve not embedded it directly, but the YouTube version below shows the output. This is a working animation of a convolution, generated directly from the expressions.</p>
+<p>This produces a video. To keep the notebook small, I’ve not embedded it directly, but the YouTube version below shows the output. This is a working animation of a convolution, generated directly from the expressions used to compute it.</p>
 <div class="cell">
 <div class="cell-output cell-output-display">
 
@@ -753,7 +753,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 </div>
 <section id="other-forms-of-convolution" class="level3">
 <h3 class="anchored" data-anchor-id="other-forms-of-convolution">Other Forms of Convolution</h3>
-<p>The nice thing about the way have this structured is that it’s trivial to visualize other forms of the convolution. For example, if we wanted to see what it looks like with padding set to 2 (making this a <a href="https://ai.stackexchange.com/a/27780">full convolution</a>), we’d just need to change the value of the <code>zero_pad_width</code> param in the call to <code>convolve()</code> and everything else works the same:</p>
+<p>Because the drawing logic is driven purely off the expressions, it’s trivial to visualize other forms of the convolution. For example, if we wanted to see what it looks like with padding set to 2 (making this a <a href="https://ai.stackexchange.com/a/27780">full convolution</a>), we’d just need to change the value of the <code>zero_pad_width</code> param in the call to <code>convolve()</code> and everything else* works the same:</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -794,16 +794,21 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
         
 </div>
 </div>
-<p>This doesn’t show the padding on <span class="math inline">\(a^{[1]}\)</span> - remember that it’s just highlighting which cells are multipled together - but this is enough to see the effect of the padding. It’s like <span class="math inline">\(W^{[2]}\)</span> starts positioned so that only it’s bottom-right element overlaps with the top-left element of <span class="math inline">\(a^{[1]}\)</span>, and then progresses to the right, then down, all the way until only its top-right element is overlaid with <span class="math inline">\(a^{[1]}\)</span>’s bottom-right element. And again, this visualization was generated directly from the expressions.</p>
+<blockquote class="blockquote">
+<p>*Well, one small change was needed: in order to accommodate the larger output matrix, I reduced the spacing between the objects. But nothing else in the drawing logic changed.</p>
+</blockquote>
+<p>This doesn’t show the padding on <span class="math inline">\(a^{[1]}\)</span> - remember that it’s just highlighting which cells are multiplied together - but this is enough to see the effect of the padding. It’s like <span class="math inline">\(W^{[2]}\)</span> starts positioned so that only it’s bottom-right element overlaps with the top-left element of <span class="math inline">\(a^{[1]}\)</span>, and then progresses to the right, then down, all the way until only its top-right element is overlaid with <span class="math inline">\(a^{[1]}\)</span>’s bottom-right element.</p>
+<p>The change to the <code>zero_pad_width</code> parameter to <code>convolve()</code> resulted in different expressions in the output matrix and the visualization code simply rendered those.</p>
 </section>
 </section>
 <section id="reality-check" class="level2">
 <h2 class="anchored" data-anchor-id="reality-check">Reality Check</h2>
-<p>At this point, some of you will (I hope) be thinking, “cool!” But others will be thinking, “hang on, you ran a process that effectively recorded its steps in a data structure (albeit a weird one) and then you replayed it from that data structure - it shouldn’t be a suprise that you see the result you’d expect.” And to this I say, first, “yes”. And, please hold for what comes next.</p>
+<p>At this point, I hope at least some readers think this is cool. But others of you may be thinking, “Hang on. You ran a process that recorded its steps in a data structure (albeit a weird one), then you pulled out those steps from the data structure and replayed them visually. You could have just made the convolution code output the highlights map directly and skipped the expression stuff altogether.”</p>
+<p>This is fair. But, the special thing about using expressions is that SymPy knows how to do calculus and it can differentiate those expressions for us. Please hold for what comes next.</p>
 </section>
 <section id="backprop-through-convolutions" class="level2">
 <h2 class="anchored" data-anchor-id="backprop-through-convolutions">Backprop through Convolutions</h2>
-<p>The calculation of <span class="math inline">\(z^{[2]}\)</span> we’ve looked at so far is part of the forward pass of a CNN. As I mentioned before, <span class="math inline">\(z^{[2]}\)</span> will typically go through a non-linear activation function to produce <span class="math inline">\(a^{[2]}\)</span>, which would propagate all the way to the end of the network, producing a final output, <span class="math inline">\(\hat{y}\)</span>.</p>
+<p>The calculation of <span class="math inline">\(z^{[2]}\)</span> we’ve looked at so far is part of the forward pass of a CNN. In the rest of the forward pass, <span class="math inline">\(z^{[2]}\)</span> will typically go through a non-linear activation function, <span class="math inline">\(g^{[2]}()\)</span>, to produce <span class="math inline">\(a^{[2]}\)</span>, which would propagate through potentially more layers to the end of the network, producing a final output, <span class="math inline">\(\hat{y}\)</span>.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -845,7 +850,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 </div>
 </div>
 <p>To start the backward pass, we’d evaluate the loss function (<span class="math inline">\(\mathcal{L}(y, \hat{y})\)</span>) and use the chain rule to propagate the loss backwards through the layers. My CNN class didn’t derive the backprop equations for convolutional layers - my attempting to do that on my own led to this whole investigation. It turns out that the approach of using symbols in the convolution matrices makes it really easy to not only derive the backprop equations but also visualize them.</p>
-<p>As a starting point, I’ll assume the backprop process has given us <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> and now need to compute <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span>, and <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>.</p>
+<p>Because we haven’t defined what the later layers look like, we have to take on faith that someone has done the work to back-propagate the loss gradient through them and has handed us <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span>. Now need to compute <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span>, and <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>.</p>
 <p>Let’s start with <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>: the gradient of the loss with respect to the weights in the convolution filter, <span class="math inline">\(W^{[2]}\)</span>.</p>
 <section id="deriving-fracpartial-mathcallpartial-w2" class="level3">
 <h3 class="anchored" data-anchor-id="deriving-fracpartial-mathcallpartial-w2">Deriving <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span></h3>
