@@ -532,9 +532,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <p><img src="sym-conv_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p>For simplicity, I’m assuming <span class="math inline">\(a^{[1]}\)</span> has just one channel, there’s just a single <span class="math inline">\(W^{[2]}\)</span> filter, and we’re looking at just a single training example.</p>
-<p>In the forward pass, <span class="math inline">\(z^{[2]}\)</span> would go through an activation function to produce <span class="math inline">\(a^{[2]}\)</span>, which would then propagate through subsequent layers, and ultimately produce an output, <span class="math inline">\(\hat{y}\)</span>.</p>
-<p>In fact, the forward pass calculation of <span class="math inline">\(z^{[2]}\)</span> for our layer of interest can now be represented with the following few lines of code:</p>
+<p>For simplicity, I’m assuming <span class="math inline">\(a^{[1]}\)</span> has just one channel, there’s just a single <span class="math inline">\(W^{[2]}\)</span> filter, and we’re looking at just a single training example. The following few lines of code implement the forward pass calculation of <span class="math inline">\(z^{[2]}\)</span> for our layer of interest:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
@@ -614,7 +612,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <p><span class="math display">\[
 {W^{[2]}}_{1,1} {a^{[1]}}_{1,2} + {W^{[2]}}_{1,2} {a^{[1]}}_{1,3} + {W^{[2]}}_{1,3} {a^{[1]}}_{1,4} + {W^{[2]}}_{2,1} {a^{[1]}}_{2,2} + {W^{[2]}}_{2,2} {a^{[1]}}_{2,3} + {W^{[2]}}_{2,3} {a^{[1]}}_{2,4} + {W^{[2]}}_{3,1} {a^{[1]}}_{3,2} + {W^{[2]}}_{3,2} {a^{[1]}}_{3,3} + {W^{[2]}}_{3,3} {a^{[1]}}_{3,4}
 \]</span></p>
-<p>This turns out to be pretty easy to do. The key to doing this is that SymPy represents expressions in easily navigable tree structures. Details are in the <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/manipulation.html">documentation</a> but the basic idea is that every expression object has a <code>func</code> attribute and an <code>args</code> attribute that (roughly) correspond to the operation and operands respectively. A few examples:</p>
+<p>This turns out to be pretty easy to do because that expression is also a data structure. SymPy represents expressions as easily navigable trees. Details are in the <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/manipulation.html">documentation</a> but the basic idea is that every expression object has a <code>func</code> attribute and an <code>args</code> attribute that (roughly) correspond to the operation and operands respectively. A few examples:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> Symbol(<span class="st">'x'</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> <span class="dv">2</span> <span class="op">+</span> x</span>
