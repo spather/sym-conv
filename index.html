@@ -891,91 +891,92 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ComputationGraphWtoZ(Scene):</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>        z11 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{1, 1}'</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>        z12 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{1, 2}'</span>)</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>        z43 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{4, 3}'</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>        z44 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{4, 4}'</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>        W11 <span class="op">=</span> MathTex(<span class="vs">r'W^{[2]}_{1, 1}'</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>        W12 <span class="op">=</span> MathTex(<span class="vs">r'W^{[2]}_{1, 2}'</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>        W32 <span class="op">=</span> MathTex(<span class="vs">r'W^{[2]}_{3, 2}'</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>        W33 <span class="op">=</span> MathTex(<span class="vs">r'W^{[2]}_{3, 3}'</span>)</span>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        zs <span class="op">=</span> VGroup(</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>            z11,</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>            z12,</span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>            z43,</span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>            z44,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        Ws <span class="op">=</span> VGroup(</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>            W11,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>            W12.set_opacity(<span class="fl">0.6</span>),</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>            W32.set_opacity(<span class="fl">0.6</span>),</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>            W33.set_opacity(<span class="fl">0.6</span>),</span>
 <span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>        ).arrange(direction<span class="op">=</span>DOWN)</span>
 <span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>        W11 <span class="op">=</span> MathTex(<span class="vs">r'W^{[2]}_{1, 1}'</span>)</span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>        W12 <span class="op">=</span> MathTex(<span class="vs">r'W^{[2]}_{1, 2}'</span>)</span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>        W32 <span class="op">=</span> MathTex(<span class="vs">r'W^{[2]}_{3, 2}'</span>)</span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>        W33 <span class="op">=</span> MathTex(<span class="vs">r'W^{[2]}_{3, 3}'</span>)</span>
-<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>        Ws <span class="op">=</span> VGroup(</span>
-<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>            W11,</span>
-<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>            W12.set_opacity(<span class="fl">0.6</span>),</span>
-<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
-<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
-<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
-<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>            W32.set_opacity(<span class="fl">0.6</span>),</span>
-<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>            W33.set_opacity(<span class="fl">0.6</span>),</span>
-<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>        ).arrange(direction<span class="op">=</span>DOWN)</span>
-<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> MathTex(<span class="st">'\mathcal</span><span class="sc">{L}</span><span class="st">'</span>).scale(<span class="fl">1.5</span>)</span>
-<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>        later_layers <span class="op">=</span> VGroup(</span>
-<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a>            Rectangle(</span>
-<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>                width<span class="op">=</span><span class="fl">1.75</span>,</span>
-<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>                height<span class="op">=</span><span class="fl">3.0</span>,</span>
-<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>                fill_color<span class="op">=</span>BLACK,</span>
-<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a>                fill_opacity<span class="op">=</span><span class="fl">1.0</span>,</span>
-<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a>                stroke_width<span class="op">=</span><span class="fl">0.0</span>,</span>
-<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a>            ),</span>
-<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>            VGroup(create_ellipsis(), Text(<span class="st">"later layers"</span>).scale(<span class="fl">0.4</span>)).arrange(</span>
-<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>                direction<span class="op">=</span>DOWN</span>
-<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>            ),</span>
-<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(</span>
-<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>            VGroup(</span>
-<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a>                Ws,</span>
-<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a>                zs,</span>
-<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a>                later_layers,</span>
-<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a>                loss,</span>
-<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a>            ).arrange(direction<span class="op">=</span>RIGHT, buff<span class="op">=</span><span class="fl">2.5</span>),</span>
-<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> z <span class="kw">in</span> [z11, z12, z43, z44]:</span>
-<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.add(</span>
-<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a>                Arrow(</span>
-<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a>                    start<span class="op">=</span>W11.get_right(),</span>
-<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a>                    end<span class="op">=</span>z.get_left(),</span>
-<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a>                    max_tip_length_to_length_ratio<span class="op">=</span><span class="fl">0.05</span>,</span>
-<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a>                    max_stroke_width_to_length_ratio<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.add(</span>
-<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a>                Arrow(</span>
-<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a>                    start<span class="op">=</span>z.get_right(),</span>
-<span id="cb34-69"><a href="#cb34-69" aria-hidden="true" tabindex="-1"></a>                    end<span class="op">=</span>loss.get_left(),</span>
-<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a>                    max_tip_length_to_length_ratio<span class="op">=</span><span class="fl">0.025</span>,</span>
-<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a>                    max_stroke_width_to_length_ratio<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb34-74"><a href="#cb34-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Make the "later layers" depiction appear in front of the arrows</span></span>
-<span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add_foreground_mobject(later_layers)</span>
-<span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> W <span class="kw">in</span> [W12, W32, W33]:</span>
-<span id="cb34-79"><a href="#cb34-79" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> z <span class="kw">in</span> [z11, z12, z43, z44]:</span>
-<span id="cb34-80"><a href="#cb34-80" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.add(</span>
-<span id="cb34-81"><a href="#cb34-81" aria-hidden="true" tabindex="-1"></a>                    Arrow(</span>
-<span id="cb34-82"><a href="#cb34-82" aria-hidden="true" tabindex="-1"></a>                        start<span class="op">=</span>W.get_right(),</span>
-<span id="cb34-83"><a href="#cb34-83" aria-hidden="true" tabindex="-1"></a>                        end<span class="op">=</span>z.get_left(),</span>
-<span id="cb34-84"><a href="#cb34-84" aria-hidden="true" tabindex="-1"></a>                        max_tip_length_to_length_ratio<span class="op">=</span><span class="fl">0.05</span>,</span>
-<span id="cb34-85"><a href="#cb34-85" aria-hidden="true" tabindex="-1"></a>                        max_stroke_width_to_length_ratio<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb34-86"><a href="#cb34-86" aria-hidden="true" tabindex="-1"></a>                    ).set_opacity(<span class="fl">0.2</span>)</span>
-<span id="cb34-87"><a href="#cb34-87" aria-hidden="true" tabindex="-1"></a>                )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>        z11 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{1, 1}'</span>)</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>        z12 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{1, 2}'</span>)</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>        z43 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{4, 3}'</span>)</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>        z44 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{4, 4}'</span>)</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>        zs <span class="op">=</span> VGroup(</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>            z11,</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>            z12,</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>            z43,</span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>            z44,</span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>        ).arrange(direction<span class="op">=</span>DOWN)</span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> MathTex(<span class="st">'\mathcal</span><span class="sc">{L}</span><span class="st">'</span>).scale(<span class="fl">1.5</span>)</span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a>        later_layers <span class="op">=</span> VGroup(</span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>            Rectangle(</span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>                width<span class="op">=</span><span class="fl">1.75</span>,</span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>                height<span class="op">=</span><span class="fl">3.0</span>,</span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a>                fill_color<span class="op">=</span>BLACK,</span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a>                fill_opacity<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a>                stroke_width<span class="op">=</span><span class="fl">0.0</span>,</span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>            VGroup(create_ellipsis(), Text(<span class="st">"later layers"</span>).scale(<span class="fl">0.4</span>)).arrange(</span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>                direction<span class="op">=</span>DOWN</span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(</span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a>            VGroup(</span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a>                Ws,</span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a>                zs,</span>
+<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a>                later_layers,</span>
+<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a>                loss,</span>
+<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>            ).arrange(direction<span class="op">=</span>RIGHT, buff<span class="op">=</span><span class="fl">2.5</span>),</span>
+<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> z <span class="kw">in</span> [z11, z12, z43, z44]:</span>
+<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.add(</span>
+<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a>                Arrow(</span>
+<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a>                    start<span class="op">=</span>W11.get_right(),</span>
+<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a>                    end<span class="op">=</span>z.get_left(),</span>
+<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a>                    max_tip_length_to_length_ratio<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a>                    max_stroke_width_to_length_ratio<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.add(</span>
+<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a>                Arrow(</span>
+<span id="cb34-69"><a href="#cb34-69" aria-hidden="true" tabindex="-1"></a>                    start<span class="op">=</span>z.get_right(),</span>
+<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a>                    end<span class="op">=</span>loss.get_left(),</span>
+<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a>                    max_tip_length_to_length_ratio<span class="op">=</span><span class="fl">0.025</span>,</span>
+<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a>                    max_stroke_width_to_length_ratio<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb34-74"><a href="#cb34-74" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Make the "later layers" depiction appear in front of the arrows</span></span>
+<span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add_foreground_mobject(later_layers)</span>
+<span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-79"><a href="#cb34-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> W <span class="kw">in</span> [W12, W32, W33]:</span>
+<span id="cb34-80"><a href="#cb34-80" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> z <span class="kw">in</span> [z11, z12, z43, z44]:</span>
+<span id="cb34-81"><a href="#cb34-81" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.add(</span>
+<span id="cb34-82"><a href="#cb34-82" aria-hidden="true" tabindex="-1"></a>                    Arrow(</span>
+<span id="cb34-83"><a href="#cb34-83" aria-hidden="true" tabindex="-1"></a>                        start<span class="op">=</span>W.get_right(),</span>
+<span id="cb34-84"><a href="#cb34-84" aria-hidden="true" tabindex="-1"></a>                        end<span class="op">=</span>z.get_left(),</span>
+<span id="cb34-85"><a href="#cb34-85" aria-hidden="true" tabindex="-1"></a>                        max_tip_length_to_length_ratio<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb34-86"><a href="#cb34-86" aria-hidden="true" tabindex="-1"></a>                        max_stroke_width_to_length_ratio<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb34-87"><a href="#cb34-87" aria-hidden="true" tabindex="-1"></a>                    ).set_opacity(<span class="fl">0.2</span>)</span>
+<span id="cb34-88"><a href="#cb34-88" aria-hidden="true" tabindex="-1"></a>                )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -1236,16 +1237,121 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 </section>
 <section id="deriving-fracpartial-mathcallpartial-a1" class="level3">
 <h3 class="anchored" data-anchor-id="deriving-fracpartial-mathcallpartial-a1">Deriving <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span></h3>
-<p>Next, let’s work out <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>, the gradient of the loss function with respect to the previous layer’s activations. We can do this by applying the chain rule, as we did in the previous section:</p>
-<p>For each element <span class="math inline">\(a^{[1]}_{i, j}\)</span> of <span class="math inline">\(a^{[1]}\)</span>:</p>
+<p>Next, let’s work out <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>, the gradient of the loss function with respect to the previous layer’s activations. Again, a computation graph helps visualize how the elements of <span class="math inline">\(a^{[1]}\)</span> impact the loss:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ComputationGraphAtoZ(Scene):</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>        a11 <span class="op">=</span> MathTex(<span class="vs">r'a^{[1]}_{1, 1}'</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>        a12 <span class="op">=</span> MathTex(<span class="vs">r'a^{[1]}_{1, 2}'</span>)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>        a65 <span class="op">=</span> MathTex(<span class="vs">r'a^{[1]}_{6, 5}'</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>        a66 <span class="op">=</span> MathTex(<span class="vs">r'a^{[1]}_{6, 6}'</span>)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>        Ws <span class="op">=</span> VGroup(</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>            a11,</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>            a12,</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>).set_opacity(<span class="fl">0.6</span>),</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>            a65,</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>            a66,</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>        ).arrange(direction<span class="op">=</span>DOWN)</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>        z11 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{1, 1}'</span>)</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>        z12 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{1, 2}'</span>)</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>        z43 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{4, 3}'</span>)</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>        z44 <span class="op">=</span> MathTex(<span class="vs">r'z^{[2]}_{4, 4}'</span>)</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>        zs <span class="op">=</span> VGroup(</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>            z11,</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>            z12,</span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>            Text(<span class="st">"."</span>),</span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a>            z43,</span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>            z44,</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a>        ).arrange(direction<span class="op">=</span>DOWN)</span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> MathTex(<span class="st">'\mathcal</span><span class="sc">{L}</span><span class="st">'</span>).scale(<span class="fl">1.5</span>)</span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a>        later_layers <span class="op">=</span> VGroup(</span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a>            Rectangle(</span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a>                width<span class="op">=</span><span class="fl">1.75</span>,</span>
+<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a>                height<span class="op">=</span><span class="fl">3.0</span>,</span>
+<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a>                fill_color<span class="op">=</span>BLACK,</span>
+<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a>                fill_opacity<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb45-40"><a href="#cb45-40" aria-hidden="true" tabindex="-1"></a>                stroke_width<span class="op">=</span><span class="fl">0.0</span>,</span>
+<span id="cb45-41"><a href="#cb45-41" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb45-42"><a href="#cb45-42" aria-hidden="true" tabindex="-1"></a>            VGroup(create_ellipsis(), Text(<span class="st">"later layers"</span>).scale(<span class="fl">0.4</span>)).arrange(</span>
+<span id="cb45-43"><a href="#cb45-43" aria-hidden="true" tabindex="-1"></a>                direction<span class="op">=</span>DOWN</span>
+<span id="cb45-44"><a href="#cb45-44" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb45-45"><a href="#cb45-45" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb45-46"><a href="#cb45-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-47"><a href="#cb45-47" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add(</span>
+<span id="cb45-48"><a href="#cb45-48" aria-hidden="true" tabindex="-1"></a>            VGroup(</span>
+<span id="cb45-49"><a href="#cb45-49" aria-hidden="true" tabindex="-1"></a>                Ws,</span>
+<span id="cb45-50"><a href="#cb45-50" aria-hidden="true" tabindex="-1"></a>                zs,</span>
+<span id="cb45-51"><a href="#cb45-51" aria-hidden="true" tabindex="-1"></a>                later_layers,</span>
+<span id="cb45-52"><a href="#cb45-52" aria-hidden="true" tabindex="-1"></a>                loss,</span>
+<span id="cb45-53"><a href="#cb45-53" aria-hidden="true" tabindex="-1"></a>            ).arrange(direction<span class="op">=</span>RIGHT, buff<span class="op">=</span><span class="fl">2.5</span>),</span>
+<span id="cb45-54"><a href="#cb45-54" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb45-55"><a href="#cb45-55" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb45-56"><a href="#cb45-56" aria-hidden="true" tabindex="-1"></a>        arrow_pairs <span class="op">=</span> [</span>
+<span id="cb45-57"><a href="#cb45-57" aria-hidden="true" tabindex="-1"></a>            (a11, z11),</span>
+<span id="cb45-58"><a href="#cb45-58" aria-hidden="true" tabindex="-1"></a>            (a12, z11),</span>
+<span id="cb45-59"><a href="#cb45-59" aria-hidden="true" tabindex="-1"></a>            (a12, z12),</span>
+<span id="cb45-60"><a href="#cb45-60" aria-hidden="true" tabindex="-1"></a>            (a65, z43),</span>
+<span id="cb45-61"><a href="#cb45-61" aria-hidden="true" tabindex="-1"></a>            (a65, z44),</span>
+<span id="cb45-62"><a href="#cb45-62" aria-hidden="true" tabindex="-1"></a>            (a66, z44),</span>
+<span id="cb45-63"><a href="#cb45-63" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb45-64"><a href="#cb45-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-65"><a href="#cb45-65" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> a, z <span class="kw">in</span> arrow_pairs:</span>
+<span id="cb45-66"><a href="#cb45-66" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.add(</span>
+<span id="cb45-67"><a href="#cb45-67" aria-hidden="true" tabindex="-1"></a>                Arrow(</span>
+<span id="cb45-68"><a href="#cb45-68" aria-hidden="true" tabindex="-1"></a>                    start<span class="op">=</span>a.get_right(),</span>
+<span id="cb45-69"><a href="#cb45-69" aria-hidden="true" tabindex="-1"></a>                    end<span class="op">=</span>z.get_left(),</span>
+<span id="cb45-70"><a href="#cb45-70" aria-hidden="true" tabindex="-1"></a>                    max_tip_length_to_length_ratio<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb45-71"><a href="#cb45-71" aria-hidden="true" tabindex="-1"></a>                    max_stroke_width_to_length_ratio<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb45-72"><a href="#cb45-72" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb45-73"><a href="#cb45-73" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb45-74"><a href="#cb45-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-75"><a href="#cb45-75" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> z <span class="kw">in</span> [z11, z12, z43, z44]:</span>
+<span id="cb45-76"><a href="#cb45-76" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.add(</span>
+<span id="cb45-77"><a href="#cb45-77" aria-hidden="true" tabindex="-1"></a>                Arrow(</span>
+<span id="cb45-78"><a href="#cb45-78" aria-hidden="true" tabindex="-1"></a>                    start<span class="op">=</span>z.get_right(),</span>
+<span id="cb45-79"><a href="#cb45-79" aria-hidden="true" tabindex="-1"></a>                    end<span class="op">=</span>loss.get_left(),</span>
+<span id="cb45-80"><a href="#cb45-80" aria-hidden="true" tabindex="-1"></a>                    max_tip_length_to_length_ratio<span class="op">=</span><span class="fl">0.025</span>,</span>
+<span id="cb45-81"><a href="#cb45-81" aria-hidden="true" tabindex="-1"></a>                    max_stroke_width_to_length_ratio<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb45-82"><a href="#cb45-82" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb45-83"><a href="#cb45-83" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb45-84"><a href="#cb45-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-85"><a href="#cb45-85" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Make the "later layers" depiction appear in front of the arrows</span></span>
+<span id="cb45-86"><a href="#cb45-86" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.add_foreground_mobject(later_layers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-display">
+<p><img src="sym-conv_files/figure-html/cell-53-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The structure is the same as the computation graph for <span class="math inline">\(W^{[2]}\)</span> we looked at in the previous section, with one important difference: not every element of <span class="math inline">\(a^{[1]}\)</span> contributes to every element of <span class="math inline">\(z^{[2]}\)</span>. The intuition behind this is that when computing any element of <span class="math inline">\(z^{[2]}\)</span>, the filter <span class="math inline">\(W^{[2]}\)</span> only overlaps a subset of <span class="math inline">\(a^{[1]}\)</span> (and the <a href="#animating-the-visualization">visualization</a> demonstrates this).</p>
+<p>It turns out we don’t have to think too hard about this. We can still apply the chain rule, as we did in the previous section. For each element <span class="math inline">\(a^{[1]}_{i, j}\)</span> of <span class="math inline">\(a^{[1]}\)</span>:</p>
 <p><span class="math display">\[
 \frac{\partial \mathcal{L}}{\partial a^{[1]}_{i, j}} = \sum_{k, l} \frac{\partial \mathcal{L}}{\partial z^{[2]}_{k, l}}\frac{\partial z^{[2]}_{k, l}}{\partial a^{[1]}_{i, j}}
 \]</span></p>
-<p>And of course, we don’t have to do this by hand.</p>
+<p>We’re summing across all <em>possible</em> paths from a given <span class="math inline">\(a^{[1]}_{i, j}\)</span> through all the <span class="math inline">\(z^{[2]}_{k, l}\)</span>s to the loss. Because we actually have the expressions for each element of <span class="math inline">\(z^{[2]}\)</span> in terms of the elements of <span class="math inline">\(W^{[2]}\)</span> and <span class="math inline">\(a^{[1]}\)</span>, when some <span class="math inline">\(a^{[1]}_{i, j}\)</span> does not contribute to some <span class="math inline">\(z^{[2]}_{k, l}\)</span>, the <span class="math inline">\(\frac{\partial z^{[2]}_{k, l}}{\partial a^{[1]}_{i, j}}\)</span> term is zero. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>da1 <span class="op">=</span> dz2_chain_rule_ufunc(a1)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(da1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a1[5][5] doesn't contribute to z2[0][0]</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>z2[<span class="dv">0</span>][<span class="dv">0</span>].diff(a1[<span class="dv">5</span>][<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math inline">\(\displaystyle 0\)</span></p>
+</div>
+</div>
+<p>So we can now compute all the elements of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span> via the chain rule. And of course, we don’t have to do it by hand - the same chain rule helper function does the job.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>da1 <span class="op">=</span> dz2_chain_rule_ufunc(a1)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(da1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math display">\[\begin{bmatrix}
 \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,1} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,2} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,1} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,3} + \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,2} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,1} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,3} + \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,2} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,1} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,3} + \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,2} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)} {W^{[2]}}_{1,3}\\
@@ -1257,62 +1363,62 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 \]</span></p>
 </div>
 </div>
-<p>Again, an matrix of expressions and the shape looks interesting. Because these expressions are sums of products of indexed expressions, we can build a highlights map and visualize it.</p>
+<p>We get an matrix of expressions and their shape looks interesting. Because these expressions are sums of products of indexed expressions, we can build a highlights map and visualize it.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BackPropDa1(Scene):</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a1, W2, and convolve them:</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>        a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>        b2 <span class="op">=</span> symbols(<span class="vs">r'b^{[2]}'</span>)</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>        z2 <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>) <span class="op">+</span> b2</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set up the loss function symbolically.</span></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>        yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>        L <span class="op">=</span> Function(<span class="vs">r'\mathcal</span><span class="sc">{L}</span><span class="vs">'</span>)(y, yhat)</span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build dL/dz2</span></span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>        dz2 <span class="op">=</span> ndarray_of_indexed_base(</span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build dL/da1</span></span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>        da1 <span class="op">=</span> ndarray_of_indexed_base(</span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'a^{[1]}'</span>), a1.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies </span></span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># chain_rule() with dz2 and z2 across all elements.</span></span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>        dz2_chain_rule_ufunc <span class="op">=</span> np.frompyfunc(</span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: chain_rule(<span class="bu">zip</span>(dz2.reshape(<span class="op">-</span><span class="dv">1</span>), z2.reshape(<span class="op">-</span><span class="dv">1</span>)), x), <span class="dv">1</span>, <span class="dv">1</span></span>
-<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Do the calculation to get the expressions for dW2</span></span>
-<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>        da1_expr <span class="op">=</span> dz2_chain_rule_ufunc(a1)</span>
-<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>        dz2_view, W2_view, da1_view <span class="op">=</span> draw_matrices(</span>
-<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>            scene<span class="op">=</span><span class="va">self</span>,</span>
-<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a>            matrices_and_labels<span class="op">=</span>[</span>
-<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>                (dz2, MathTex(<span class="vs">r'\frac{\partial \mathcal</span><span class="sc">{L}</span><span class="vs">}{\partial z^{[2]</span><span class="sc">}}</span><span class="vs">'</span>)),</span>
-<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a>                (W2, MathTex(<span class="vs">r'W^{[2]}'</span>)),</span>
-<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a>                (da1, MathTex(<span class="vs">r'\frac{\partial \mathcal</span><span class="sc">{L}</span><span class="vs">}{\partial a^{[1]</span><span class="sc">}}</span><span class="vs">'</span>)),</span>
-<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a>            ],</span>
-<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Map matrix names to views</span></span>
-<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a>        array_to_view_map <span class="op">=</span> {</span>
-<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'a^{[1]}'</span>: da1_view,</span>
-<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'W^{[2]}'</span>: W2_view,</span>
-<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'z^{[2]}'</span>: dz2_view,</span>
-<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build highlight maps</span></span>
-<span id="cb46-50"><a href="#cb46-50" aria-hidden="true" tabindex="-1"></a>        highlight_maps <span class="op">=</span> build_highlights_map_ufunc(da1_expr)</span>
-<span id="cb46-51"><a href="#cb46-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-52"><a href="#cb46-52" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, da1_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BackPropDa1(Scene):</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a1, W2, and convolve them:</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>        a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>        W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>        b2 <span class="op">=</span> symbols(<span class="vs">r'b^{[2]}'</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>        z2 <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>) <span class="op">+</span> b2</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set up the loss function symbolically.</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>        yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>        L <span class="op">=</span> Function(<span class="vs">r'\mathcal</span><span class="sc">{L}</span><span class="vs">'</span>)(y, yhat)</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build dL/dz2</span></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>        dz2 <span class="op">=</span> ndarray_of_indexed_base(</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build dL/da1</span></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>        da1 <span class="op">=</span> ndarray_of_indexed_base(</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'a^{[1]}'</span>), a1.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies </span></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># chain_rule() with dz2 and z2 across all elements.</span></span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>        dz2_chain_rule_ufunc <span class="op">=</span> np.frompyfunc(</span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: chain_rule(<span class="bu">zip</span>(dz2.reshape(<span class="op">-</span><span class="dv">1</span>), z2.reshape(<span class="op">-</span><span class="dv">1</span>)), x), <span class="dv">1</span>, <span class="dv">1</span></span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Do the calculation to get the expressions for dW2</span></span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>        da1_expr <span class="op">=</span> dz2_chain_rule_ufunc(a1)</span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a>        dz2_view, W2_view, da1_view <span class="op">=</span> draw_matrices(</span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>            scene<span class="op">=</span><span class="va">self</span>,</span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a>            matrices_and_labels<span class="op">=</span>[</span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>                (dz2, MathTex(<span class="vs">r'\frac{\partial \mathcal</span><span class="sc">{L}</span><span class="vs">}{\partial z^{[2]</span><span class="sc">}}</span><span class="vs">'</span>)),</span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a>                (W2, MathTex(<span class="vs">r'W^{[2]}'</span>)),</span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a>                (da1, MathTex(<span class="vs">r'\frac{\partial \mathcal</span><span class="sc">{L}</span><span class="vs">}{\partial a^{[1]</span><span class="sc">}}</span><span class="vs">'</span>)),</span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Map matrix names to views</span></span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a>        array_to_view_map <span class="op">=</span> {</span>
+<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'a^{[1]}'</span>: da1_view,</span>
+<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'W^{[2]}'</span>: W2_view,</span>
+<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'z^{[2]}'</span>: dz2_view,</span>
+<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build highlight maps</span></span>
+<span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a>        highlight_maps <span class="op">=</span> build_highlights_map_ufunc(da1_expr)</span>
+<span id="cb48-51"><a href="#cb48-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-52"><a href="#cb48-52" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, da1_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -1322,84 +1428,84 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
         
 </div>
 </div>
-<p>Like in other examples, I’ve put the inputs on the left and middle and the output (<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>) on the right. This is not quite a straight convolution like we saw in <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, but it does look somewhat reminiscient of the full convolution (convolution with padding) we looked at in the <a href="#other-forms-of-convolution">Other Forms of Convolution</a> section. Only, it’s sort of backwards. Whereas in the full convolution, the multiplications start with the bottom-right corner of the convolution filter, here they start at the top-left. We could make this match by rotating <span class="math inline">\(W^{[2]}\)</span> by 180°.</p>
+<p>Like in other examples, I’ve put the inputs on the left and middle and the output (<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>) on the right. This is not quite a straight convolution like we saw in <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}}\)</span>, but it does look somewhat reminiscient of the full convolution (convolution with padding) we looked at in the <a href="#other-forms-of-convolution">Other Forms of Convolution</a> section. Only, it’s sort of backwards. Whereas in the full convolution, the multiplications start with the bottom-right corner of the convolution filter, here they start at the top-left. We could make this match by rotating <span class="math inline">\(W^{[2]}\)</span> by 180°:</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BackPropDa1WithRotation(Scene):</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a1, W2, and convolve them:</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>        a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>        W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>        b2 <span class="op">=</span> symbols(<span class="vs">r'b^{[2]}'</span>)</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        z2 <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>) <span class="op">+</span> b2</span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set up the loss function symbolically.</span></span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>        yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>        L <span class="op">=</span> Function(<span class="vs">r'\mathcal</span><span class="sc">{L}</span><span class="vs">'</span>)(y, yhat)</span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build dL/dz2</span></span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>        dz2 <span class="op">=</span> ndarray_of_indexed_base(</span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build dL/da1</span></span>
-<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>        da1 <span class="op">=</span> ndarray_of_indexed_base(</span>
-<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'a^{[1]}'</span>), a1.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
-<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies </span></span>
-<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># chain_rule() with dz2 and z2 across all elements.</span></span>
-<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a>        dz2_chain_rule_ufunc <span class="op">=</span> np.frompyfunc(</span>
-<span id="cb47-27"><a href="#cb47-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: chain_rule(<span class="bu">zip</span>(dz2.reshape(<span class="op">-</span><span class="dv">1</span>), z2.reshape(<span class="op">-</span><span class="dv">1</span>)), x), <span class="dv">1</span>, <span class="dv">1</span></span>
-<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb47-29"><a href="#cb47-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Do the calculation to get the expressions for dW2</span></span>
-<span id="cb47-31"><a href="#cb47-31" aria-hidden="true" tabindex="-1"></a>        da1_expr <span class="op">=</span> dz2_chain_rule_ufunc(a1)</span>
-<span id="cb47-32"><a href="#cb47-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-33"><a href="#cb47-33" aria-hidden="true" tabindex="-1"></a>        dz2_view, W2_view, da1_view <span class="op">=</span> draw_matrices(</span>
-<span id="cb47-34"><a href="#cb47-34" aria-hidden="true" tabindex="-1"></a>            scene<span class="op">=</span><span class="va">self</span>,</span>
-<span id="cb47-35"><a href="#cb47-35" aria-hidden="true" tabindex="-1"></a>            matrices_and_labels<span class="op">=</span>[</span>
-<span id="cb47-36"><a href="#cb47-36" aria-hidden="true" tabindex="-1"></a>                (dz2, MathTex(<span class="vs">r'\frac{\partial \mathcal</span><span class="sc">{L}</span><span class="vs">}{\partial z^{[2]</span><span class="sc">}}</span><span class="vs">'</span>)),</span>
-<span id="cb47-37"><a href="#cb47-37" aria-hidden="true" tabindex="-1"></a>                (W2, MathTex(<span class="vs">r'W^{[2]}'</span>)),</span>
-<span id="cb47-38"><a href="#cb47-38" aria-hidden="true" tabindex="-1"></a>                (da1, MathTex(<span class="vs">r'\frac{\partial \mathcal</span><span class="sc">{L}</span><span class="vs">}{\partial a^{[1]</span><span class="sc">}}</span><span class="vs">'</span>)),</span>
-<span id="cb47-39"><a href="#cb47-39" aria-hidden="true" tabindex="-1"></a>            ],</span>
-<span id="cb47-40"><a href="#cb47-40" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb47-41"><a href="#cb47-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-42"><a href="#cb47-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Rotate W2 and draw a curved arrow to indicate the rotation</span></span>
-<span id="cb47-43"><a href="#cb47-43" aria-hidden="true" tabindex="-1"></a>        radius <span class="op">=</span> <span class="fl">0.3</span>  <span class="co"># radius of the curved arrow</span></span>
-<span id="cb47-44"><a href="#cb47-44" aria-hidden="true" tabindex="-1"></a>        angle <span class="op">=</span> PI  <span class="co"># angle the arrow (and W2) should rotate through</span></span>
-<span id="cb47-45"><a href="#cb47-45" aria-hidden="true" tabindex="-1"></a>        arrow_end <span class="op">=</span> W2_view.get_critical_point(DOWN) <span class="op">+</span> np.array(</span>
-<span id="cb47-46"><a href="#cb47-46" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">0</span>, <span class="op">-</span><span class="fl">0.9</span>, <span class="dv">0</span>]</span>
-<span id="cb47-47"><a href="#cb47-47" aria-hidden="true" tabindex="-1"></a>        )  <span class="co"># end the arrow .9 down from W2</span></span>
-<span id="cb47-48"><a href="#cb47-48" aria-hidden="true" tabindex="-1"></a>        arrow_start <span class="op">=</span> arrow_end <span class="op">+</span> np.array(</span>
-<span id="cb47-49"><a href="#cb47-49" aria-hidden="true" tabindex="-1"></a>            [radius <span class="op">*</span> math.sin(angle), radius <span class="op">-</span> (radius <span class="op">*</span> math.cos(angle)), <span class="dv">0</span>]</span>
-<span id="cb47-50"><a href="#cb47-50" aria-hidden="true" tabindex="-1"></a>        )  <span class="co"># calculate the arrow start based on the end and the radius + angle</span></span>
-<span id="cb47-51"><a href="#cb47-51" aria-hidden="true" tabindex="-1"></a>        curved_arrow <span class="op">=</span> CurvedArrow(</span>
-<span id="cb47-52"><a href="#cb47-52" aria-hidden="true" tabindex="-1"></a>            start_point<span class="op">=</span>arrow_start,</span>
-<span id="cb47-53"><a href="#cb47-53" aria-hidden="true" tabindex="-1"></a>            end_point<span class="op">=</span>arrow_end,</span>
-<span id="cb47-54"><a href="#cb47-54" aria-hidden="true" tabindex="-1"></a>            radius<span class="op">=-</span>radius,</span>
-<span id="cb47-55"><a href="#cb47-55" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb47-56"><a href="#cb47-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-57"><a href="#cb47-57" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="dv">1</span>)</span>
-<span id="cb47-58"><a href="#cb47-58" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(</span>
-<span id="cb47-59"><a href="#cb47-59" aria-hidden="true" tabindex="-1"></a>            Rotate(W2_view, angle<span class="op">=-</span>angle, rate_func<span class="op">=</span>linear),</span>
-<span id="cb47-60"><a href="#cb47-60" aria-hidden="true" tabindex="-1"></a>            Create(curved_arrow, rate_func<span class="op">=</span>linear),</span>
-<span id="cb47-61"><a href="#cb47-61" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb47-62"><a href="#cb47-62" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="dv">1</span>)</span>
-<span id="cb47-63"><a href="#cb47-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-64"><a href="#cb47-64" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Map matrix names to views</span></span>
-<span id="cb47-65"><a href="#cb47-65" aria-hidden="true" tabindex="-1"></a>        array_to_view_map <span class="op">=</span> {</span>
-<span id="cb47-66"><a href="#cb47-66" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'a^{[1]}'</span>: da1_view,</span>
-<span id="cb47-67"><a href="#cb47-67" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'W^{[2]}'</span>: W2_view,</span>
-<span id="cb47-68"><a href="#cb47-68" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'z^{[2]}'</span>: dz2_view,</span>
-<span id="cb47-69"><a href="#cb47-69" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb47-70"><a href="#cb47-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-71"><a href="#cb47-71" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build highlight maps</span></span>
-<span id="cb47-72"><a href="#cb47-72" aria-hidden="true" tabindex="-1"></a>        highlight_maps <span class="op">=</span> build_highlights_map_ufunc(da1_expr)</span>
-<span id="cb47-73"><a href="#cb47-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-74"><a href="#cb47-74" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, da1_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BackPropDa1WithRotation(Scene):</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> construct(<span class="va">self</span>):</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a1, W2, and convolve them:</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>        W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>        b2 <span class="op">=</span> symbols(<span class="vs">r'b^{[2]}'</span>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>        z2 <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>) <span class="op">+</span> b2</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set up the loss function symbolically.</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> symbols(<span class="st">'y'</span>)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>        yhat <span class="op">=</span> symbols(<span class="vs">r'\hat</span><span class="sc">{y}</span><span class="vs">'</span>)</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>        L <span class="op">=</span> Function(<span class="vs">r'\mathcal</span><span class="sc">{L}</span><span class="vs">'</span>)(y, yhat)</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build dL/dz2</span></span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>        dz2 <span class="op">=</span> ndarray_of_indexed_base(</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build dL/da1</span></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>        da1 <span class="op">=</span> ndarray_of_indexed_base(</span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'a^{[1]}'</span>), a1.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies </span></span>
+<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># chain_rule() with dz2 and z2 across all elements.</span></span>
+<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a>        dz2_chain_rule_ufunc <span class="op">=</span> np.frompyfunc(</span>
+<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: chain_rule(<span class="bu">zip</span>(dz2.reshape(<span class="op">-</span><span class="dv">1</span>), z2.reshape(<span class="op">-</span><span class="dv">1</span>)), x), <span class="dv">1</span>, <span class="dv">1</span></span>
+<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Do the calculation to get the expressions for dW2</span></span>
+<span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a>        da1_expr <span class="op">=</span> dz2_chain_rule_ufunc(a1)</span>
+<span id="cb49-32"><a href="#cb49-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-33"><a href="#cb49-33" aria-hidden="true" tabindex="-1"></a>        dz2_view, W2_view, da1_view <span class="op">=</span> draw_matrices(</span>
+<span id="cb49-34"><a href="#cb49-34" aria-hidden="true" tabindex="-1"></a>            scene<span class="op">=</span><span class="va">self</span>,</span>
+<span id="cb49-35"><a href="#cb49-35" aria-hidden="true" tabindex="-1"></a>            matrices_and_labels<span class="op">=</span>[</span>
+<span id="cb49-36"><a href="#cb49-36" aria-hidden="true" tabindex="-1"></a>                (dz2, MathTex(<span class="vs">r'\frac{\partial \mathcal</span><span class="sc">{L}</span><span class="vs">}{\partial z^{[2]</span><span class="sc">}}</span><span class="vs">'</span>)),</span>
+<span id="cb49-37"><a href="#cb49-37" aria-hidden="true" tabindex="-1"></a>                (W2, MathTex(<span class="vs">r'W^{[2]}'</span>)),</span>
+<span id="cb49-38"><a href="#cb49-38" aria-hidden="true" tabindex="-1"></a>                (da1, MathTex(<span class="vs">r'\frac{\partial \mathcal</span><span class="sc">{L}</span><span class="vs">}{\partial a^{[1]</span><span class="sc">}}</span><span class="vs">'</span>)),</span>
+<span id="cb49-39"><a href="#cb49-39" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb49-40"><a href="#cb49-40" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb49-41"><a href="#cb49-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-42"><a href="#cb49-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Rotate W2 and draw a curved arrow to indicate the rotation</span></span>
+<span id="cb49-43"><a href="#cb49-43" aria-hidden="true" tabindex="-1"></a>        radius <span class="op">=</span> <span class="fl">0.3</span>  <span class="co"># radius of the curved arrow</span></span>
+<span id="cb49-44"><a href="#cb49-44" aria-hidden="true" tabindex="-1"></a>        angle <span class="op">=</span> PI  <span class="co"># angle the arrow (and W2) should rotate through</span></span>
+<span id="cb49-45"><a href="#cb49-45" aria-hidden="true" tabindex="-1"></a>        arrow_end <span class="op">=</span> W2_view.get_critical_point(DOWN) <span class="op">+</span> np.array(</span>
+<span id="cb49-46"><a href="#cb49-46" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">0</span>, <span class="op">-</span><span class="fl">0.9</span>, <span class="dv">0</span>]</span>
+<span id="cb49-47"><a href="#cb49-47" aria-hidden="true" tabindex="-1"></a>        )  <span class="co"># end the arrow .9 down from W2</span></span>
+<span id="cb49-48"><a href="#cb49-48" aria-hidden="true" tabindex="-1"></a>        arrow_start <span class="op">=</span> arrow_end <span class="op">+</span> np.array(</span>
+<span id="cb49-49"><a href="#cb49-49" aria-hidden="true" tabindex="-1"></a>            [radius <span class="op">*</span> math.sin(angle), radius <span class="op">-</span> (radius <span class="op">*</span> math.cos(angle)), <span class="dv">0</span>]</span>
+<span id="cb49-50"><a href="#cb49-50" aria-hidden="true" tabindex="-1"></a>        )  <span class="co"># calculate the arrow start based on the end and the radius + angle</span></span>
+<span id="cb49-51"><a href="#cb49-51" aria-hidden="true" tabindex="-1"></a>        curved_arrow <span class="op">=</span> CurvedArrow(</span>
+<span id="cb49-52"><a href="#cb49-52" aria-hidden="true" tabindex="-1"></a>            start_point<span class="op">=</span>arrow_start,</span>
+<span id="cb49-53"><a href="#cb49-53" aria-hidden="true" tabindex="-1"></a>            end_point<span class="op">=</span>arrow_end,</span>
+<span id="cb49-54"><a href="#cb49-54" aria-hidden="true" tabindex="-1"></a>            radius<span class="op">=-</span>radius,</span>
+<span id="cb49-55"><a href="#cb49-55" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb49-56"><a href="#cb49-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-57"><a href="#cb49-57" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="dv">1</span>)</span>
+<span id="cb49-58"><a href="#cb49-58" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.play(</span>
+<span id="cb49-59"><a href="#cb49-59" aria-hidden="true" tabindex="-1"></a>            Rotate(W2_view, angle<span class="op">=-</span>angle, rate_func<span class="op">=</span>linear),</span>
+<span id="cb49-60"><a href="#cb49-60" aria-hidden="true" tabindex="-1"></a>            Create(curved_arrow, rate_func<span class="op">=</span>linear),</span>
+<span id="cb49-61"><a href="#cb49-61" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb49-62"><a href="#cb49-62" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wait(<span class="dv">1</span>)</span>
+<span id="cb49-63"><a href="#cb49-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-64"><a href="#cb49-64" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Map matrix names to views</span></span>
+<span id="cb49-65"><a href="#cb49-65" aria-hidden="true" tabindex="-1"></a>        array_to_view_map <span class="op">=</span> {</span>
+<span id="cb49-66"><a href="#cb49-66" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'a^{[1]}'</span>: da1_view,</span>
+<span id="cb49-67"><a href="#cb49-67" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'W^{[2]}'</span>: W2_view,</span>
+<span id="cb49-68"><a href="#cb49-68" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'z^{[2]}'</span>: dz2_view,</span>
+<span id="cb49-69"><a href="#cb49-69" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb49-70"><a href="#cb49-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-71"><a href="#cb49-71" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build highlight maps</span></span>
+<span id="cb49-72"><a href="#cb49-72" aria-hidden="true" tabindex="-1"></a>        highlight_maps <span class="op">=</span> build_highlights_map_ufunc(da1_expr)</span>
+<span id="cb49-73"><a href="#cb49-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-74"><a href="#cb49-74" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, da1_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -1418,22 +1524,22 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 </blockquote>
 <p>We can also check it in code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test that the full convolution of dz2 with the 180°-rotated W2 is equal to the da1 we calculated.</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>test_eq(</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    convolve(</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>        dz2, np.rot90(W2, k<span class="op">=</span><span class="dv">2</span>, axes<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>)), zero_pad_width<span class="op">=</span>W2.shape[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">1</span>, stride<span class="op">=</span><span class="dv">1</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    da1,</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test that the full convolution of dz2 with the 180°-rotated W2 is equal to the da1 we calculated.</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>test_eq(</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    convolve(</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>        dz2, np.rot90(W2, k<span class="op">=</span><span class="dv">2</span>, axes<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>)), zero_pad_width<span class="op">=</span>W2.shape[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">1</span>, stride<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    da1,</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="deriving-fracpartial-mathcallpartial-b2" class="level3">
 <h3 class="anchored" data-anchor-id="deriving-fracpartial-mathcallpartial-b2">Deriving <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span></h3>
-<p>Now let’s tackle <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span>: the gradient of the loss with respect to the bias term, <span class="math inline">\(b^{[2]}\)</span>. In our calculation of <span class="math inline">\(z^{[2]}\)</span>:</p>
+<p>Finally, let’s tackle <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial b^{[2]}}\)</span>: the gradient of the loss with respect to the bias term, <span class="math inline">\(b^{[2]}\)</span>. In our calculation of <span class="math inline">\(z^{[2]}\)</span>:</p>
 <p><span class="math display">\[
 z^{[2]} = a^{[1]} * W^{[2]} + b^{[2]}
 \]</span></p>
-<p><span class="math inline">\(b^{[2]}\)</span> is a scalar that we add to each element of the matrix, <span class="math inline">\(a^{[1]} * W^{[2]}\)</span>. For the purpose of this derivation, it’s helpful to think of <span class="math inline">\(b^{[2]}\)</span> as a matrix with the same dimensions as <span class="math inline">\(a^{[1]} * W^{[2]}\)</span> in which the value of every element is the scalar value of <span class="math inline">\(b^{[2]}\)</span>:</p>
+<p><span class="math inline">\(b^{[2]}\)</span> is a scalar that we add to each element of the matrix, <span class="math inline">\(a^{[1]} * W^{[2]}\)</span>. For the purpose of this derivation, it’s helpful to think of <span class="math inline">\(b^{[2]}\)</span> as a matrix with the same dimensions as <span class="math inline">\(a^{[1]} * W^{[2]}\)</span> in which every element has the scalar value of <span class="math inline">\(b^{[2]}\)</span>:</p>
 <p><span class="math display">\[
 \begin{bmatrix}
 b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
@@ -1447,10 +1553,10 @@ b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
 \mathbf{B^{[2]}} =
 \def\arraystretch{1.5}
 \begin{bmatrix}
-\mathbf{B^{[2]}_{11}} &amp; \mathbf{B^{[2]}_{12}} &amp; \mathbf{B^{[2]}_{13}} &amp; \mathbf{B^{[2]}_{14}}\\
-\mathbf{B^{[2]}_{21}} &amp; \mathbf{B^{[2]}_{22}} &amp; \mathbf{B^{[2]}_{23}} &amp; \mathbf{B^{[2]}_{24}}\\
-\mathbf{B^{[2]}_{31}} &amp; \mathbf{B^{[2]}_{32}} &amp; \mathbf{B^{[2]}_{33}} &amp; \mathbf{B^{[2]}_{34}}\\
-\mathbf{B^{[2]}_{41}} &amp; \mathbf{B^{[2]}_{42}} &amp; \mathbf{B^{[2]}_{43}} &amp; \mathbf{B^{[2]}_{44}}\\
+\mathbf{B^{[2]}_{1, 1}} &amp; \mathbf{B^{[2]}_{1, 2}} &amp; \mathbf{B^{[2]}_{1, 3}} &amp; \mathbf{B^{[2]}_{1, 4}}\\
+\mathbf{B^{[2]}_{2, 1}} &amp; \mathbf{B^{[2]}_{2, 2}} &amp; \mathbf{B^{[2]}_{2, 3}} &amp; \mathbf{B^{[2]}_{2, 4}}\\
+\mathbf{B^{[2]}_{3, 1}} &amp; \mathbf{B^{[2]}_{3, 2}} &amp; \mathbf{B^{[2]}_{3, 3}} &amp; \mathbf{B^{[2]}_{3, 4}}\\
+\mathbf{B^{[2]}_{4, 1}} &amp; \mathbf{B^{[2]}_{4, 2}} &amp; \mathbf{B^{[2]}_{4, 3}} &amp; \mathbf{B^{[2]}_{4, 4}}\\
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -1463,28 +1569,34 @@ b^{[2]} &amp; b^{[2]} &amp; b^{[2]} &amp; b^{[2]}\\
 <p>and plug it into the formula for <span class="math inline">\(z^{[2]}\)</span>:</p>
 <p><span class="math display">\[
 z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
-\]</span> Now the plus sign in the formular above is just plain matrix (element-wise) addition.</p>
+\]</span> Now the plus sign in the formula above is just plain matrix (element-wise) addition.</p>
 <blockquote class="blockquote">
 <p>Note: The transformation from <span class="math inline">\(b^{[2]}\)</span> to <span class="math inline">\(\mathbf{B^{[2]}}\)</span> I’ve written out here actually happens implicitly in the code we wrote earlier (<code>z2 = convolve(a1, W2, 0, 1) + b2</code>) because of <a href="https://numpy.org/doc/stable/user/basics.broadcasting.html">NumPy broadcasting</a>.</p>
 </blockquote>
-<p>We can then calculate the derivative of <span class="math inline">\(\mathcal{L}\)</span> with respect to this <span class="math inline">\(\mathbf{B^{[2]}}\)</span> matrix. Remember, we’ve got <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> and now we want <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}}\)</span>.</p>
-<p>Like we did in the calculation of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{W^{[2]}}}\)</span>, we can apply the chain rule. E.g. <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]_{11}}}}\)</span> would be:</p>
+<p>Because of the element-wise addition, it’s clear that each element of <span class="math inline">\(\mathbf{B^{[2]}}\)</span> affects only one element of <span class="math inline">\(z^{[2]}\)</span>. So the chain rule formulation simplifies to just:</p>
 <p><span class="math display">\[
-\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}_{11}}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}_{11}}\frac{\partial z^{[2]}_{11}}{\partial \mathbf{B^{[2]}_{11}}} + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{12}}\frac{\partial z^{[2]}_{12}}{\partial \mathbf{B^{[2]}_{11}}} + \cdots + \frac{\partial \mathcal{L}}{\partial z^{[2]}_{44}}\frac{\partial z^{[2]}_{44}}{\partial \mathbf{B^{[2]}_{11}}}
+\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}_{i, j}}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}_{i, j}}\frac{\partial z^{[2]}_{i, j}}{\partial \mathbf{B^{[2]}_{i, j}}}
 \]</span></p>
-<p>Of course, many of these terms are zero because <span class="math inline">\(\frac{\partial z^{[2]}_{k, l}}{\partial \mathbf{B^{[2]}_{i, j}}} = 0\)</span> when <span class="math inline">\(k \neq i\)</span> or <span class="math inline">\(l \neq j\)</span>. But rather than trying to reason about this ourselves or simplify by hand to work out what this is really saying, we can instead just use our <code>chain_rule()</code> function to do it for us:</p>
+<p>As usual, we can have SymPy do the work:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Redo the calculation of z2 using the B2 matrix</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>conv_result <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>B2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'B^{[2]}'</span>), conv_result.shape)</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> conv_result <span class="op">+</span> B2</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute dB2</span></span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>dB2 <span class="op">=</span> dz2_chain_rule_ufunc(B2)</span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dB2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Redo the calculation of z2 using the B2 matrix</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'a^{[1]}'</span>), (<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>W2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'W^{[2]}'</span>), (<span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>conv_result <span class="op">=</span> convolve(a1, W2, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>B2 <span class="op">=</span> ndarray_of_indexed_base(IndexedBase(<span class="vs">r'B^{[2]}'</span>), conv_result.shape)</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> conv_result <span class="op">+</span> B2</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a ufunc that calls differentiates the elements of one array with</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="co"># respect to the elements of another array:</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>diff_ufunc <span class="op">=</span> np.frompyfunc(<span class="kw">lambda</span> y, x: y.diff(x), <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute dZ2/dB2:</span></span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>dZ2_dB2 <span class="op">=</span> diff_ufunc(z2, B2)</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="co"># dL/dB2 = dL/dz2 * dZ2/dB2 (element-wise multiply)</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>dB2 <span class="op">=</span> dz2 <span class="op">*</span> dZ2_dB2</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dB2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math display">\[\begin{bmatrix}
 \frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
@@ -1500,7 +1612,41 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
 \]</span></p>
 <p>in code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>test_eq(dB2, dz2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>test_eq(dB2, dz2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This makes sense, because <span class="math inline">\(\frac{\partial z^{[2]}_{i, j}}{\partial \mathbf{B^{[2]}_{i, j}}} = 1\)</span> for every <span class="math inline">\(i, j\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>Markdown(matrix_to_markdown(dZ2_dB2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math display">\[\begin{bmatrix}
+1 &amp; 1 &amp; 1 &amp; 1\\
+1 &amp; 1 &amp; 1 &amp; 1\\
+1 &amp; 1 &amp; 1 &amp; 1\\
+1 &amp; 1 &amp; 1 &amp; 1\end{bmatrix}
+\]</span></p>
+</div>
+</div>
+<p>As an aside, we could actually have used our same <code>chain_rule()</code> helper function to calculate <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}}}\)</span>. We could say</p>
+<p><span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial \mathbf{B^{[2]}_{i, j}}} = \sum_{k, l} \frac{\partial \mathcal{L}}{\partial z^{[2]}_{k, l}}\frac{\partial z^{[2]}_{k, l}}{\partial \mathbf{B^{[2]}_{i, j}}}
+\]</span></p>
+<p>knowing that <span class="math inline">\(\frac{\partial z^{[2]}_{k, l}}{\partial \mathbf{B^{[2]}_{i, j}}} = 0\)</span> when <span class="math inline">\(k \neq i\)</span> or <span class="math inline">\(l \neq j\)</span>.</p>
+<p>Because we have the expressions for <span class="math inline">\(z^{[2]}\)</span>, SymPy would correctly work out which terms are zero and still produce the right answer:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute dB2 via the chain rule helper function</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>dB2_alt <span class="op">=</span> dz2_chain_rule_ufunc(B2)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>display(Markdown(matrix_to_markdown(dB2_alt)))</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>test_eq(dB2_alt, dB2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><span class="math display">\[\begin{bmatrix}
+\frac{\partial}{\partial {z^{[2]}}_{1,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{1,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
+\frac{\partial}{\partial {z^{[2]}}_{2,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{2,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
+\frac{\partial}{\partial {z^{[2]}}_{3,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{3,4}} \mathcal{L}{\left(y,\hat{y} \right)}\\
+\frac{\partial}{\partial {z^{[2]}}_{4,1}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,2}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,3}} \mathcal{L}{\left(y,\hat{y} \right)} &amp; \frac{\partial}{\partial {z^{[2]}}_{4,4}} \mathcal{L}{\left(y,\hat{y} \right)}\end{bmatrix}
+\]</span></p>
+</div>
 </div>
 </section>
 </section>
