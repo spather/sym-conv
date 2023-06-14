@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Convolution with Symbols</title>
+<title>Using a Machine to Learn Machine Learning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -84,7 +84,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Convolution with Symbols</h1>
+<h1 class="title">Using a Machine to Learn Machine Learning</h1>
 </div>
 
 
@@ -103,26 +103,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
 <p>The deep learning classes I’ve taken have all followed a similar progression:</p>
 <ol type="1">
-<li>First, you learn to do the math by hand, using symbols (the input vector is <span class="math inline">\(x\)</span>, the weight matrix is <span class="math inline">\(W\)</span>, <span class="math inline">\(z = Wx + b\)</span>, etc)</li>
+<li>First, you learn to do the math by hand, using symbols (the input vector is <span class="math inline">\(x\)</span>, the weight matrix is <span class="math inline">\(W\)</span>, <span class="math inline">\(z = Wx + b\)</span>, etc.)</li>
 <li>Next, you write code to implement the math numerically (manipulating arrays or tensors of numbers). At this stage, you write it from scratch using just NumPy arrays.</li>
 <li>Finally, you graduate to writing code that uses deep learning frameworks like TensorFlow and PyTorch.</li>
 </ol>
 <p>Step 1 teaches you the theory, and step 3 teaches you the tools that real practitioners use. Step 2 in between teaches you what those tools are doing so you don’t approach them as black boxes. I’m a fan.</p>
-<p>I recently took a class on Convolutional Neural Networks. While it followed this progression, it didn’t teach the math for back propagation through convolutional layers. I tried to work this out for myself and found that the math wasn’t hard, but it was tedious (long expressions, lots of superscripts and subscripts to keep track of). In trying to explore ways to automate some of the tedious parts, I think I found an approach that re-organizes things so that step 2 (writing the code from scratch) borrows an idea from step 3 (automatic differentiation) and as a result, actually helps with step 1 (understanding the math).</p>
+<p>I recently took a class on Convolutional Neural Networks. While it followed this progression, it didn’t teach the math for back propagation through convolutional layers. I tried to work this out for myself and found that the math wasn’t hard, but it was tedious (long expressions, lots of superscripts and subscripts to keep track of).</p>
+<p>In trying to explore ways to automate some of the tedious parts, I think I found an approach that re-organizes things so that step 2 (writing the code from scratch) borrows an idea from step 3 (automatic differentiation) and as a result, actually helps with step 1 (understanding the math).</p>
 <section id="automatic-differentiation-as-a-convenience" class="level3">
 <h3 class="anchored" data-anchor-id="automatic-differentiation-as-a-convenience">Automatic Differentiation as a Convenience</h3>
 <p>In the usual progression, the big change between steps 2 and 3 is that the deep learning frameworks give you automatic differentiation capabilities (<a href="https://www.tensorflow.org/guide/autodiff"><code>GradientTape</code></a> in TensorFlow, <a href="https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html"><code>autograd</code></a> in PyTorch). When you write a neural network from scratch, you write the forward and backward passes as separate algorithms that share some data. With auto differentiation, you to write just the forward pass logic and you get the backward pass for free. The framework keeps track of the operations performed in the forward pass and can calculate the partial derivatives required for back propagation automatically.</p>
-<p>Auto differentiation reduces the amount of code you need to write to implement a neural network but it isn’t a learning tool. It does its job numerically: given the numerical value of the gradient at some node in a computation graph, you can get the numerical value of the gradient at earlier nodes, but you can’t see the derivatives expressed symbolically. You get the answer but the framework doesn’t show its work. Classes introduce auto differentiation frameworks late in the curriculum because they’re a convenience you earn the right to use after you’ve worked through the math the hard way.</p>
+<p>Auto differentiation reduces the amount of code you need to write to implement a neural network but it isn’t a learning tool. It does its job numerically: given the numerical value of the gradient at some node in a computation graph, you can get the numerical value of the gradient at earlier nodes, but you can’t see the derivatives expressed symbolically. You get the answer but the framework doesn’t show its work. ML Classes introduce auto differentiation frameworks late in the curriculum because they’re a convenience you earn the right to use after you’ve worked through the math the hard way.</p>
 </section>
 <section id="automatic-differentiation-as-a-learning-tool" class="level3">
 <h3 class="anchored" data-anchor-id="automatic-differentiation-as-a-learning-tool">Automatic Differentiation as a Learning Tool</h3>
-<p>My approach is a hybrid: implementing algorithms from scratch but using a symbolic framework that can auto differentiate while showing its work. It really helped me with my task of deriving the backprop equations for convolutions. This technique isn’t a replacement for doing math by hand and I wouldn’t blindly trust it, but it helped me learn. It automated the math that’s easy but tedious to work through by hand, and helped me visualize the patterns behind the equations.</p>
-<p>In this notebook, I’ll walk you through what I did.</p>
+<p>I found a hybrid approach: implementing algorithms from scratch but using a symbolic framework that can auto differentiate while showing its work. It really helped me with my task of deriving the backprop equations for convolutions. This technique isn’t a replacement for doing math by hand and I wouldn’t blindly trust it, but it helped me learn. It automated the math that’s easy - but tedious - to work through by hand, and helped me visualize the patterns behind the equations.</p>
+<p>I’ll walk you through what I did. All of the code for this is available on <a href="https://github.com/spather/sym-conv">my GitHub</a>.</p>
 </section>
 </section>
 <section id="convolutions-from-scratch" class="level2">
 <h2 class="anchored" data-anchor-id="convolutions-from-scratch">Convolutions from Scratch</h2>
-<p>After my CNN course covered the basic math, the first coding exercise was to implement the convolution operation from scratch, using just NumPy (step 2 in the progression I mentioned earlier). Below is the convolution* function I implemented. It’s probably not the most efficient implementation, but writing it was a good learning exercise.</p>
+<p>After the CNN course I took covered the basic math, the first coding exercise was to implement the convolution operation from scratch, using just NumPy (step 2 in the progression I mentioned earlier). Below is the convolution* function I implemented. It’s probably not the most efficient implementation, but writing it was a good learning exercise.</p>
 <blockquote class="blockquote">
 <p>*I’m aware that, mathematically speaking, what I’m implementing here is actually <em>cross-correlation</em> rather than convolution. <a href="https://towardsdatascience.com/convolution-vs-correlation-af868b6b4fb5">This article</a> offers a good description of the differences. tl;dr: in true mathematical convolution, you’re supposed to flip the kernel 180° before applying it. But in deep learning, the kernel weights are learned during training so the orientation is not meaningful. Deep-learning practitioners don’t seem to worry about the distinction between convolution and cross-correlation, so I’m going with it.</p>
 </blockquote>
@@ -194,6 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    convolve2d(X_test, f_test, mode<span class="op">=</span><span class="st">'valid'</span>) <span class="co"># scipy</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>So we can be reasonably sure it works.</p>
 </section>
 <section id="numeric-vs-symbolic-computing" class="level2">
 <h2 class="anchored" data-anchor-id="numeric-vs-symbolic-computing">Numeric vs Symbolic Computing</h2>
@@ -1225,11 +1227,11 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 </div>
 <p>Notice how in <code>dw2[0][0]</code> (which is <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial W^{[2]}_{11}}\)</span>) each element of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> is multiplied by the corresponding element of <span class="math inline">\(a^{[1]}\)</span> and in <code>dw2[1][0]</code> (<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial w^{[2]}_{21}}\)</span>) all the indices of <span class="math inline">\(a^{[1]}\)</span> are shifted down by one, as you’d expect.</p>
 <p>But this is all so much easier to see in the visualization. Again, the visualization was generated from the expressions in <code>dW2</code>, not programmed based on some advanced knowledge of how it should look. In this way, it’s actually more of a simulation than a visualization.</p>
-<p>So we can conclude that:</p>
+<p>Based on what we see in the visualization and our inspection of the equations, it seems:</p>
 <p><span class="math display">\[
 \frac{\partial \mathcal{L}}{\partial W^{[2]}} = a^{[1]} * \frac{\partial \mathcal{L}}{\partial z^{[2]}}
 \]</span></p>
-<p>In code:</p>
+<p>We can further convince ourselves by testing in code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>test_eq(convolve(a1, dz2, <span class="dv">0</span>, <span class="dv">1</span>), dW2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1515,7 +1517,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
         
 </div>
 </div>
-<p>So we can conclude that</p>
+<p>Now this looks like a full convolution should. So these observations lead us to:</p>
 <p><span class="math display">\[
 \frac{\partial \mathcal{L}}{\partial a^{[1]}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}} *_{full} rotate180(W^{[2]})
 \]</span></p>
@@ -1649,6 +1651,31 @@ z^{[2]} = a^{[1]} * W^{[2]} + \mathbf{B^{[2]}}
 </div>
 </div>
 </section>
+</section>
+<section id="final-reflections-and-admissions" class="level2">
+<h2 class="anchored" data-anchor-id="final-reflections-and-admissions">Final Reflections and Admissions</h2>
+<p>This exploration started for me when in the midst of the <a href="https://www.coursera.org/learn/convolutional-neural-networks">Convolutional Neural Networks</a> course on Coursera, I tried to derive the backprop equations for convolutions by hand. I did it, but it involved lots of this kind of writing in my notebook:</p>
+<div class="cell">
+<div class="cell-output cell-output-display">
+<p><img src="sym-conv_files/figure-html/cell-67-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Apart from the obvious tedium, there was another downside: the patterns behind these equations didn’t jump out at me. With the one above, it only took a little reflection to see that this looks like a convolution between <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial z^{[2]}}\)</span> and <span class="math inline">\(a^{[1]}\)</span>. But in the working out of <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial a^{[1]}}\)</span>, I could tell there was a pattern but couldn’t identify it on my own.</p>
+<p>So I read a few excellent convolution backprop explainer articles like <a href="https://pavisj.medium.com/convolutions-and-backpropagations-46026a8f5d2c">this one</a> and <a href="https://www.jefkine.com/general/2016/09/05/backpropagation-in-convolutional-neural-networks/">this one</a>, and then of course it clicked. But if I’m being honest, I don’t know that I would ever have worked out</p>
+<p><span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial a^{[1]}} = \frac{\partial \mathcal{L}}{\partial z^{[2]}} *_{full} rotate180(W^{[2]})
+\]</span></p>
+<p>on my own (admission number 1).</p>
+<p>That truth, and my certainty that I’m a better coder than a mathematician, got me wondering whether I could write code to automate generating some of these expressions. I thought that if I didn’t have to do the work to write out the equations by hand, I could look at a bigger sample of them, and that would help me grasp patterns more intuitively.</p>
+<p>This led to the following progression:</p>
+<ul>
+<li>I started by writing code to generate <span class="math inline">\(\LaTeX\)</span> expressions, based on the patterns I’d worked out by doing the calculus by hand.</li>
+<li>Realizing the calculus itself was relatively straightforward, I wondered if I could implement that in code.</li>
+<li>(Admission number 2): I put a few days effort into writing my own, tiny symbolic framework. It could do basic arithmetic simplification, could take the derivative of variable or constant with respect to a variable, and could do the sum and product rules of calculus. Much as I knew then and know now that this was a waste of time, it’s kind of amazing how far I got with just that. It actually kind of worked.</li>
+<li>But realizing that there were endless ways my silly symbolic framework would fail to simplify expressions, I prudently gave up and switched to SymPy.</li>
+</ul>
+<p>I am really happy with the way this turned out. Besides teaching myself how backprop works in CNNs more deeply than I ever intended to, I’m hopeful that what I did here will prove to be a reusable learning tool. I’ve got a lot more ML to learn, I’m going to want to go as deep into the math as I can, and I’m optimistic that SymPy and code I wrote here will help me do that.</p>
+<p>And of course, I hope others get benefit from this too.</p>
 </section>
 
 </main>
