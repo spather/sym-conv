@@ -179,8 +179,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>expected <span class="op">=</span> np.array(</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        [<span class="fl">3.0</span>, <span class="fl">5.0</span>, <span class="fl">7.0</span>], </span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        [<span class="fl">3.0</span>, <span class="fl">5.0</span>, <span class="fl">7.0</span>], </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        [<span class="fl">3.0</span>, <span class="fl">5.0</span>, <span class="fl">7.0</span>],</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        [<span class="fl">3.0</span>, <span class="fl">5.0</span>, <span class="fl">7.0</span>],</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        [<span class="fl">3.0</span>, <span class="fl">5.0</span>, <span class="fl">7.0</span>]</span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -367,11 +367,11 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 </div>
 <p>The reason we want to use Indexed Objects for our symbols is that it’s easier to extract the indices and the name of the “base” (the thing being indexed):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test accessing the indices (note that we use zero-based indices to access </span></span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test accessing the indices (note that we use zero-based indices to access</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the array but the conceptual matrix indices are 1-based.)</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>test_eq(X_test[<span class="dv">0</span>][<span class="dv">0</span>].indices, (<span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Test getting the name of the base. </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Test getting the name of the base.</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>test_eq(X_test[<span class="dv">0</span>][<span class="dv">0</span>].base.name, <span class="st">'x'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The ability to easily pull out the base name and indices of a symbol will come in handy later when we analyze expressions.</p>
@@ -585,7 +585,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Map of cells to highlight</span></span>
 <span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>        highlights_map <span class="op">=</span> {</span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'W^{[2]}'</span>: [(<span class="dv">1</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">3</span>), (<span class="dv">2</span>, <span class="dv">1</span>), (<span class="dv">2</span>, <span class="dv">2</span>), (<span class="dv">2</span>, <span class="dv">3</span>), (<span class="dv">3</span>, <span class="dv">1</span>), (<span class="dv">3</span>, <span class="dv">2</span>), (<span class="dv">3</span>, <span class="dv">3</span>)], </span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'W^{[2]}'</span>: [(<span class="dv">1</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">3</span>), (<span class="dv">2</span>, <span class="dv">1</span>), (<span class="dv">2</span>, <span class="dv">2</span>), (<span class="dv">2</span>, <span class="dv">3</span>), (<span class="dv">3</span>, <span class="dv">1</span>), (<span class="dv">3</span>, <span class="dv">2</span>), (<span class="dv">3</span>, <span class="dv">3</span>)],</span>
 <span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r'a^{[1]}'</span>: [(<span class="dv">1</span>, <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">3</span>), (<span class="dv">1</span>, <span class="dv">4</span>), (<span class="dv">2</span>, <span class="dv">2</span>), (<span class="dv">2</span>, <span class="dv">3</span>), (<span class="dv">2</span>, <span class="dv">4</span>), (<span class="dv">3</span>, <span class="dv">2</span>), (<span class="dv">3</span>, <span class="dv">3</span>), (<span class="dv">3</span>, <span class="dv">4</span>)],</span>
 <span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>        }</span>
 <span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a></span>
@@ -656,7 +656,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> indexed <span class="kw">in</span> expr.args:</span>
 <span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> indexed.base.name <span class="kw">not</span> <span class="kw">in</span> results:</span>
 <span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>                results[indexed.base.name] <span class="op">=</span> []</span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>            results[indexed.base.name].append(indexed.indices)    </span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>            results[indexed.base.name].append(indexed.indices)</span>
 <span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This function makes a lot of assumptions that it’s dealing with expressions that are just sums of products of <code>Indexed</code> objects, but it suffices for now. We can test it with one of the expressions in the <code>z2</code> array:</p>
@@ -795,8 +795,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Build highlight map for all elements of z2</span></span>
 <span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>        highlight_maps <span class="op">=</span> build_highlights_map_ufunc(z2 <span class="op">-</span> b2)</span>
 <span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, z2_view, array_to_view_map)</span>
-<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>        animate_highlights_map(<span class="va">self</span>, highlight_maps, z2_view, array_to_view_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -1017,7 +1016,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <p>Earlier, I alluded to SymPy’s <a href="https://docs.sympy.org/latest/tutorials/intro-tutorial/calculus.html">ability to do calculus</a>. Let’s look at one of those abilities - differentiation - in more detail. Here’s a quick showcase: let’s create a symbolic expression for: <span class="math inline">\(x = 2y^2 + 3z\)</span> and then differentiate with respect to <span class="math inline">\(y\)</span>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>x, y, z <span class="op">=</span> symbols(<span class="st">'x y z'</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>z </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>y<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>z</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>x.diff(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><span class="math inline">\(\displaystyle 4 y\)</span></p>
@@ -1071,7 +1070,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    IndexedBase(<span class="vs">r'z^{[2]}'</span>), z2.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
 <span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a ufunc that can be broadcast across an ndarray and applies </span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a ufunc that can be broadcast across an ndarray and applies</span></span>
 <span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="co"># chain_rule() with dz2 and z2 across all elements.</span></span>
 <span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>dz2_chain_rule_ufunc <span class="op">=</span> np.frompyfunc(</span>
 <span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> x: chain_rule(<span class="bu">zip</span>(dz2.reshape(<span class="op">-</span><span class="dv">1</span>), z2.reshape(<span class="op">-</span><span class="dv">1</span>)), x), <span class="dv">1</span>, <span class="dv">1</span></span>
@@ -1171,7 +1170,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>            transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x),</span>
 <span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies </span></span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies</span></span>
 <span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># chain_rule() with dz2 and z2 across all elements.</span></span>
 <span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a>        dz2_chain_rule_ufunc <span class="op">=</span> np.frompyfunc(</span>
 <span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: chain_rule(<span class="bu">zip</span>(dz2.reshape(<span class="op">-</span><span class="dv">1</span>), z2.reshape(<span class="op">-</span><span class="dv">1</span>)), x), <span class="dv">1</span>, <span class="dv">1</span></span>
@@ -1297,7 +1296,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb45-52"><a href="#cb45-52" aria-hidden="true" tabindex="-1"></a>                loss,</span>
 <span id="cb45-53"><a href="#cb45-53" aria-hidden="true" tabindex="-1"></a>            ).arrange(direction<span class="op">=</span>RIGHT, buff<span class="op">=</span><span class="fl">2.5</span>),</span>
 <span id="cb45-54"><a href="#cb45-54" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb45-55"><a href="#cb45-55" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb45-55"><a href="#cb45-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-56"><a href="#cb45-56" aria-hidden="true" tabindex="-1"></a>        arrow_pairs <span class="op">=</span> [</span>
 <span id="cb45-57"><a href="#cb45-57" aria-hidden="true" tabindex="-1"></a>            (a11, z11),</span>
 <span id="cb45-58"><a href="#cb45-58" aria-hidden="true" tabindex="-1"></a>            (a12, z11),</span>
@@ -1392,7 +1391,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'a^{[1]}'</span>), a1.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
 <span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies </span></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies</span></span>
 <span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># chain_rule() with dz2 and z2 across all elements.</span></span>
 <span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>        dz2_chain_rule_ufunc <span class="op">=</span> np.frompyfunc(</span>
 <span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: chain_rule(<span class="bu">zip</span>(dz2.reshape(<span class="op">-</span><span class="dv">1</span>), z2.reshape(<span class="op">-</span><span class="dv">1</span>)), x), <span class="dv">1</span>, <span class="dv">1</span></span>
@@ -1457,7 +1456,7 @@ w_{11} x_{31} + w_{12} x_{32} + w_{21} x_{41} + w_{22} x_{42} &amp; w_{11} x_{32
 <span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>            IndexedBase(<span class="vs">r'a^{[1]}'</span>), a1.shape, transform<span class="op">=</span><span class="kw">lambda</span> x: Derivative(L, x)</span>
 <span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies </span></span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a ufunc that can be broadcast across an ndarray and applies</span></span>
 <span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># chain_rule() with dz2 and z2 across all elements.</span></span>
 <span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a>        dz2_chain_rule_ufunc <span class="op">=</span> np.frompyfunc(</span>
 <span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: chain_rule(<span class="bu">zip</span>(dz2.reshape(<span class="op">-</span><span class="dv">1</span>), z2.reshape(<span class="op">-</span><span class="dv">1</span>)), x), <span class="dv">1</span>, <span class="dv">1</span></span>
